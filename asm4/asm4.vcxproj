@@ -139,17 +139,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="plane3_base_a.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Image.ppm" />
-    <None Include="skybox_back.ppm" />
-    <None Include="skybox_bottom.ppm" />
-    <None Include="skybox_left.ppm" />
-    <None Include="skybox_top.ppm" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="gmtl.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\Downloads\plane3_base_a.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="back.ppm" />
+    <None Include="bottom.ppm" />
+    <None Include="front.ppm" />
+    <None Include="left.ppm" />
+    <None Include="right.ppm" />
+    <None Include="top.ppm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
