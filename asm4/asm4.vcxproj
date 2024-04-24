@@ -142,7 +142,7 @@
     <ClInclude Include="gmtl.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\Downloads\plane3_base_a.cpp" />
+    <ClCompile Include="asm4.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
