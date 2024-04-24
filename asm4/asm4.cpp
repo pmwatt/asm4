@@ -40,7 +40,6 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <math.h>
-#include <random>
 
 #include <gmtl/gmtl.h>
 
@@ -61,7 +60,7 @@ const float colour_light_lime_green[4] = { 0.20f, 0.57f, 0.45f, 1.0f };
 const float colour_dark_gray[4] = { 0.25f, 0.25f, 0.25f, 1.0f };
 const float colour_darker_gray[4] = { 0.17f, 0.17f, 0.17f, 1.0f };
 const float colour_light_red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
-const float colour_dark_blue[4] = { 0.10f, 0.2f, 0.35f, 1.0f };
+const float colour_seaweed0[4] = { 0.8f, 0.9f, 0.9f, 1.0f };
 
 // Propeller dimensions (subpart)
 const float WING_WIDTH = 3.5;
@@ -202,6 +201,7 @@ void DrawWing(const float width, const float length, const float height, const b
 void DrawCannon(const float width, const float length, const float height);
 void DrawCube(const float width, const float length, const float height, const float colours[4]);
 void DrawCubeSeaweed(const float width, const float length, const float height, const float colours[4]);
+void DrawCubeSeaweedDarker(const float width, const float length, const float height, const float colours[4]);
 
 
 //|____________________________________________________________________
@@ -373,6 +373,14 @@ void InitGL(void)
   // Seaweed 0
   glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_0]);
   LoadPPM("seaweed0.ppm", &width, &height, &img_data, 1);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
+  free(img_data);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+  // Seaweed 1
+  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_0]);
+  LoadPPM("seaweed1.ppm", &width, &height, &img_data, 1);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
   free(img_data);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -550,14 +558,22 @@ void DisplayFunc(void)
 	glTranslatef(-500.0f, 0.0f, -500.0f);
 	for (int i = 0; i < num_seaweeds; ++i) {
 		for (int j = 0; j < num_seaweeds; ++j) {
-			//glTranslatef(20*i, 0.0f, 20*j);
 				glPushMatrix();
-			glTranslatef(SB_SIZE/num_seaweeds*i, -350, SB_SIZE/num_seaweeds*j);
-			DrawCubeSeaweed(15.0f, 0.0f, 500.0f, colour_lime_green);
+			glTranslatef(SB_SIZE/num_seaweeds*i+50, -350, SB_SIZE/num_seaweeds*j+50);
+			DrawCubeSeaweed(15.0f, 0.0f, 200.0f, colour_seaweed0);
 				glPopMatrix();
 		}
 	}
 
+	// Draw extra darker seaweeds with different textures
+	for (int i = 0; i < num_seaweeds; ++i) {
+		for (int j = 0; j < num_seaweeds; ++j) {
+				glPushMatrix();
+			glTranslatef(SB_SIZE/num_seaweeds*i, -350, SB_SIZE/num_seaweeds*j);
+			DrawCubeSeaweedDarker(15.0f, 0.0f, 500.0f, colour_lime_green);
+				glPopMatrix();
+		}
+	}
 
   glutSwapBuffers();                          // Replaces glFlush() to use double buffering
 }
@@ -919,6 +935,40 @@ void DrawCubeSeaweed(const float width, const float length, const float height, 
 
 	// front face
 	glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_0]);
+	glColor3f(colours[0], colours[1], colours[2]);
+		  glTexCoord2f(0.0, 1.0);
+	glVertex3f(w2, h2, -l2);
+		  glTexCoord2f(1.0, 1.0);
+	glVertex3f(-w2, h2, -l2);
+		  glTexCoord2f(1.0, 0.0);
+	glVertex3f(-w2, -h2, -l2);
+		  glTexCoord2f(0.0, 0.0);
+	glVertex3f(w2, -h2, -l2);
+	glEnd();
+}
+
+
+void DrawCubeSeaweedDarker(const float width, const float length, const float height, const float colours[4]) {
+	float w2 = width / 2;
+	float h2 = height / 2;
+	float l2 = length / 2;
+
+	// Sets materials
+	glMaterialf(GL_FRONT_AND_BACK,  GL_SHININESS, 20.0);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  SPECULAR_COL);
+  
+	// Turn on texture mapping and disable lighting
+	glEnable(GL_TEXTURE_2D);
+	glDisable(GL_LIGHTING);
+
+	// Sets colour
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, colours);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, colours);
+  
+	glBegin(GL_QUADS);
+
+	// front face
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_1]);
 	glColor3f(colours[0], colours[1], colours[2]);
 		  glTexCoord2f(0.0, 1.0);
 	glVertex3f(w2, h2, -l2);
