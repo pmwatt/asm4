@@ -92,7 +92,9 @@ const float CAM_FOV        = 90.0f;                     // Field of view in degs
 enum KeyModifier {KM_SHIFT = 0, KM_CTRL, KM_ALT};
 
 // Textures
-enum TextureID {TID_SKYBACK = 0, TID_SKYLEFT, TID_SKYBOTTOM, TID_SKYRIGHT, TID_SKYFRONT, TID_SKYTOP, TEXTURE_NB};  // Texture IDs, with the last ID indicating the total number of textures
+enum TextureID {TID_SKYBACK = 0, TID_SKYLEFT, TID_SKYBOTTOM,
+	TID_SKYRIGHT, TID_SKYFRONT, TID_SKYTOP, TEXTURE_NB,
+	TID_SEAWEED_0, TID_SEAWEED_1, TID_SEAWEED_2};  // Texture IDs, with the last ID indicating the total number of textures
 
 // Skybox
 const float SB_SIZE        = 1000.0f;                     // Skybox dimension
@@ -336,7 +338,7 @@ void InitGL(void)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
   // TODO: Initializes the remaining textures
-  //Skybox right wall
+  // Skybox right wall
   glBindTexture(GL_TEXTURE_2D, textures[TID_SKYRIGHT]);
   LoadPPM("uw_right.ppm", &width, &height, &img_data, 1);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
@@ -344,7 +346,7 @@ void InitGL(void)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-  //Skybox front wall
+  // Skybox front wall
   glBindTexture(GL_TEXTURE_2D, textures[TID_SKYFRONT]);
   LoadPPM("uw_front.ppm", &width, &height, &img_data, 1);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
@@ -352,9 +354,17 @@ void InitGL(void)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-  //Shybox top wall
+  // Skybox top wall
   glBindTexture(GL_TEXTURE_2D, textures[TID_SKYTOP]);
   LoadPPM("uw_top.ppm", &width, &height, &img_data, 1);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
+  free(img_data);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+  // Seaweed 0
+  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_0]);
+  LoadPPM("test.ppm", &width, &height, &img_data, 1);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
   free(img_data);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -440,35 +450,6 @@ void DisplayFunc(void)
 	  DrawCoordinateFrame(1);
 	glPopMatrix();
   }
-
-  // Plane 2 body:
- // glPushMatrix();
-	//gmtl::set(aa, plane_q);                    // Converts plane's quaternion to axis-angle form to be used by glRotatef()
-	//axis  = aa.getAxis();
-	//angle = aa.getAngle();
-	//glTranslatef(plane_p[0], plane_p[1], plane_p[2]);
-	//glRotatef(gmtl::Math::rad2Deg(angle), axis[0], axis[1], axis[2]);
-	//DrawPlaneBody(P_WIDTH, P_LENGTH, P_HEIGHT);
-	//DrawCoordinateFrame(3);
-
-	//// Plane 2's camera:
-	//glPushMatrix();
-	//  glRotatef(azimuth[1], 0, 1, 0);
-	//  glRotatef(elevation[1], 1, 0, 0);
-	//  glTranslatef(0, 0, distance[1]);
-	//  DrawCoordinateFrame(1);
-	//glPopMatrix();
-
-	//// Propeller (subpart):
-	//glPushMatrix();
-	//  glTranslatef(PROPELLER_POS[0], PROPELLER_POS[1], PROPELLER_POS[2]);     // Positions propeller on the plane
-	//  glRotatef(pp_angle, 0, 0, 1);                                           // Rotates propeller
-	//  DrawPropeller(PP_WIDTH, PP_LENGTH);
-	//  DrawCoordinateFrame(1);
-	//glPopMatrix();
- // glPopMatrix();
-
-  // turtle 2 body
   
 	// Turtle 2 body:
 	glPushMatrix();
@@ -896,6 +877,8 @@ void DrawTurtleShell(const float width, const float length, const float height)
 	drawCube(width*1.1, length*0.2, height*1.1, colour_darker_gray);
 }
 
+
+
 //|____________________________________________________________________
 //|
 //| Function: DrawPropeller
@@ -1051,7 +1034,7 @@ void DrawSkybox(const float s)
   glEnd();
 
   //Top wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SKYTOP]);
+  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_0]);
 	  glBegin(GL_QUADS);
 	glColor3f(0.3f, 0.5f, 0.8f);
 	  glTexCoord2f(0.0, 1.0);
