@@ -24,24 +24,4 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="back.ppm">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="bottom.ppm">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="front.ppm">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="left.ppm">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="right.ppm">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="top.ppm">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
 </Project>

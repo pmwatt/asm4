@@ -144,14 +144,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\..\..\..\Downloads\plane3_base_a.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="back.ppm" />
-    <None Include="bottom.ppm" />
-    <None Include="front.ppm" />
-    <None Include="left.ppm" />
-    <None Include="right.ppm" />
-    <None Include="top.ppm" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
