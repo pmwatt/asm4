@@ -603,24 +603,29 @@ void KeyboardFunc(unsigned char key, int x, int y)
 	  plane_p         = plane_p + v_q.mData;
 	  } break;
 
+	// roll /////////////////
 	case 'e': // Rolls the plane (+Z rot)
-	  plane_q = plane_q * zrotp_q;
-	  break;
+		plane_q = plane_q * zrotp_q;
+		break;
 	case 'q': // Rolls the plane (-Z rot)
-	  plane_q = plane_q * zrotn_q;
-	  break;
+		plane_q = plane_q * zrotn_q;
+		break;
 
-	case 'x': // Pitches the plane (+X rot)
-	  plane_q = plane_q * xrotp_q;
-	  break;
+	// yaw /////////////////
 	case 'a': // Yaws the plane (+Y rot)
-	  plane_q = plane_q * yrotp_q;
-	  break;
+		plane_q = plane_q * yrotp_q;
+		break;
+	case 'd': // Yaws the plane (-Y rot)
+		plane_q = plane_q * yrotn_q;
+		break;
+
+	// pitch /////////////////
+	case 'z': // Pitches the plane (+X rot)
+		plane_q = plane_q * xrotp_q;
+		break;
 	case 'c': // Pitches the plane (-X rot)
 		plane_q = plane_q * xrotn_q;
 		break;
-	case 'z': // Yaws the plane (-Y rot)
-		plane_q = plane_q * yrotn_q;
 
 //|____________________________________________________________________
 //|
@@ -821,79 +826,6 @@ void DrawCoordinateFrame(const float l)
   glEnable(GL_LIGHTING);
 }
 
-//|____________________________________________________________________
-//|
-//| Function: DrawPlaneBody
-//|
-//! \param width       [in] Width  of the plane.
-//! \param length      [in] Length of the plane.
-//! \param height      [in] Height of the plane.
-//! \return None.
-//!
-//! Draws a plane body.
-//|____________________________________________________________________
-
-void DrawPlaneBody(const float width, const float length, const float height)
-{
-  float w = width/2;
-  float l = length/2;
-
-  // Sets materials
-  glMaterialf(GL_FRONT_AND_BACK,  GL_SHININESS, 20.0);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  SPECULAR_COL);
-  
-  glBegin(GL_TRIANGLES);
-	// Body is red
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, DARKRED_COL);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, BRIGHTRED_COL);
-	glNormal3f(0.0f, 1.0f, 0.0f);     // Must be unit vector for correct lighting calculation
-	glVertex3f(0.0f, 0.0f,    l);
-	  glVertex3f(   w, 0.0f,   -l);
-	  glVertex3f(  -w, 0.0f,   -l);
-
-	// Wing is blue
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, DARKBLUE_COL);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, BRIGHTBLUE_COL);
-	glNormal3f(1.0f,    0.0f, 0.0f);  // Must be unit vector for correct lighting calculation
-	glVertex3f(0.0f,    0.0f, 0.0f);
-	  glVertex3f(0.0f,    0.0f,   -l);
-	  glVertex3f(0.0f,  height,   -l);
-  glEnd();
-}
-
-//|____________________________________________________________________
-//|
-//| Function: DrawPropeller
-//|
-//! \param width       [in] Width  of the propeller.
-//! \param length      [in] Length of the propeller.
-//! \return None.
-//!
-//! Draws a propeller.
-//|____________________________________________________________________
-
-void DrawPropeller(const float width, const float length)
-{
-  float w = width/2;
-  float l = length/2;
-
-  // Sets materials
-  glMaterialf(GL_FRONT_AND_BACK,  GL_SHININESS, 20.0);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  SPECULAR_COL);
-
-  glBegin(GL_QUADS);
-	// Propeller is white
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, DARK_COL);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MEDIUMWHITE_COL);
-	glNormal3f(0.0f, 0.0f, 1.0f);  // Must be unit vector for correct lighting calculation
-	glVertex3f(  -w,   -l, 0.0f);
-	  glVertex3f(   w,   -l, 0.0f);
-	  glVertex3f(   w,    l, 0.0f);
-	glVertex3f(  -w,    l, 0.0f);
-  glEnd();
-}
-
-
 void drawCube(const float width, const float length, const float height, const float colours[3]) {
 	float w2 = width / 2;
 	float h2 = height / 2;
@@ -906,7 +838,7 @@ void drawCube(const float width, const float length, const float height, const f
 
 	glBegin(GL_QUADS);
 
-	// Body is red
+	// Sets colour
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, colours);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, colours);
 
@@ -952,7 +884,6 @@ void drawCube(const float width, const float length, const float height, const f
 	glVertex3f(-w2, -h2, l2);
 	glVertex3f(-w2, -h2, -l2);
 	glEnd();
-	//
 }
 
 void DrawTurtleShell(const float width, const float length, const float height)
