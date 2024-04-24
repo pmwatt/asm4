@@ -899,9 +899,6 @@ void drawCube(const float width, const float length, const float height, const f
 	float h2 = height / 2;
 	float l2 = length / 2;
 
-	// for adding shadow, increase this to add contrast, vice versa
-	float c_delta = 0.05f;
-
 	// Sets materials
 	glMaterialf(GL_FRONT_AND_BACK,  GL_SHININESS, 20.0);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  SPECULAR_COL);
@@ -981,43 +978,44 @@ void DrawTurtleShell(const float width, const float length, const float height)
 
 void DrawCannon(const float width, const float length, const float height)
 {
-	  // Material properties for the cannon (optional)
-  GLfloat ambient[]  = {0.4f, 0.4f, 0.4f, 1.0f};
-  GLfloat diffuse[]  = {0.7f, 0.7f, 0.7f, 1.0f};
-  GLfloat specular[] = {0.2f, 0.2f, 0.2f, 1.0f};
-  glMaterialfv(GL_FRONT, GL_AMBIENT, ambient);
-  glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuse);
-  glMaterialfv(GL_FRONT, GL_SPECULAR, specular);
-  glMaterialf(GL_FRONT, GL_SHININESS, 100.0f);
+	// Define cylinder properties
+	float radius = width * 0.14f;  // Adjust radius based on desired width
+	float cylHeight = height*7.0f; // How short/long the cylinder is
+	int numSlices = 10;
+	static float pi = 3.141;
 
-  // Define cylinder properties
-  float radius = width * 0.14f;  // Adjust radius based on desired width
-  float cylHeight = height*7.0f; // How short/long the cylinder is
+	// Push matrix to isolate cannon transformations
+	glPushMatrix();
+		glTranslatef(0.0f, -height*3, -length*0.5);  // Adjust for centered placement
 
-  // Push matrix to isolate cannon transformations
-  glPushMatrix();
+		// Draw cylinder
+		// reference: https://community.khronos.org/t/gl-quad-strip/68258
+		// https://www.mbsoftworks.sk/tutorials/opengl4/022-cylinder-and-sphere/
+		glBegin(GL_QUAD_STRIP);
+		
+		// Sets materials
+		glMaterialf(GL_FRONT_AND_BACK,  GL_SHININESS, 20.0);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  SPECULAR_COL);
 
-  // Rotate the cannon to be on the XZ plane
-  glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+		// Sets ambient and diffuse
+		glMaterialfv(GL_FRONT, GL_AMBIENT, colour_dark_gray);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, colour_dark_gray);
 
-  // Translate the cannon to its position
-  glTranslatef(0.0f, -height, length*0.7);  // Adjust for centered placement
+		for (int i = 0; i <= numSlices; i++) {
+			float angle = i / float(numSlices) * (2.0f * pi);
+			float x = radius * cosf(angle);
+			float z = radius * sinf(angle);
 
-  // Draw cylinder using quadric object
-  GLUquadricObj *quadric = gluNewQuadric();
-  gluCylinder(quadric, radius, radius, cylHeight, 20, 20);  // 20 segments for smooth cylinder
-  gluDeleteQuadric(quadric);
+			// Draw top ring
+			glNormal3f(x / radius, 0.0f, z / radius);
+			glVertex3f(x, cylHeight / 2.0f, z);
 
-  glPushMatrix();
-	glTranslatef(radius, height/2, length);
-	drawCube(width*0.2, length*0.5, height*0.5, colour_light_red);
-
-	glTranslatef(0.0f, 0.0f, length*0.5);
-	drawCube(width*0.2, length*0.5, height*0.5, colour_lime_green);
-  glPopMatrix();
-
-  // Pop matrix to restore transformations
-  glPopMatrix();
+			// Draw bottom ring
+			glNormal3f(x / radius, 0.0f, z / radius);
+			glVertex3f(x, -cylHeight / 2.0f, z);
+		}
+		glEnd();
+	glPopMatrix();
 }
 
 void DrawWing(const float width, const float length, const float height, const bool isInverted)
