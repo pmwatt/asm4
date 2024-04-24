@@ -52,11 +52,11 @@
 
 // preset colours
 const GLfloat colour_brown[4] = { 0.45f, 0.32f, 0.22f, 1.0f };
-const float colour_lime_green[4] = { 0.10f, 0.35f, 0.47f, 1.0f };
-const float colour_light_lime_green[4] = { 0.20f, 0.45f, 0.57f, 1.0f };
+const float colour_lime_green[4] = { 0.10f, 0.47f, 0.35f, 1.0f };
+const float colour_light_lime_green[4] = { 0.20f, 0.57f, 0.45f, 1.0f };
 const float colour_dark_gray[4] = { 0.25f, 0.25f, 0.25f, 1.0f };
 const float colour_darker_gray[4] = { 0.17f, 0.17f, 0.17f, 1.0f };
-const float colour_light_pink[4] = { 0.87f, 0.66f, 0.66f, 1.0f };
+const float colour_light_red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
 
 // Propeller dimensions (subpart)
 const float WING_WIDTH = 3.5;
@@ -106,7 +106,7 @@ const GLfloat SPECULAR_LIGHT[] = { 0.5, 0.5, 0.5, 1.0 };
 // Materials
 const GLfloat DARKRED_COL[]     = { 0.1, 0.0, 0.0, 1.0 };
 const GLfloat BRIGHTRED_COL[]   = { 0.7, 0.0, 0.0, 1.0 };
-const GLfloat DARKBLUE_COL[]    = { 0.0, 0.0, 0.1, 1.0 };      
+const GLfloat DARKBLUE_COL[]    = { 0.0, 0.1, 0.0, 1.0 };      
 const GLfloat BRIGHTBLUE_COL[]  = { 0.0, 0.0, 0.7, 1.0 };
 const GLfloat DARK_COL[]        = { 0.1, 0.1, 0.1, 1.0 };      
 const GLfloat MEDIUMWHITE_COL[] = { 0.7, 0.7, 0.7, 1.0 };
@@ -191,7 +191,7 @@ void LoadPPM(const char *fname, unsigned int *w, unsigned int *h, unsigned char 
 
 void DrawTurtleShell(const float width, const float length, const float height);
 void DrawWing(const float width, const float length, const float height, const bool isInverted);
-void DrawCannon(const float width, const float length, const float height, const bool isInverted);
+void DrawCannon(const float width, const float length, const float height);
 void drawCube(const float width, const float length, const float height, const float colours[3]);
 
 //|____________________________________________________________________
@@ -543,7 +543,7 @@ void DisplayFunc(void)
 		glPushMatrix();
 			glTranslatef(0, P_HEIGHT, 0);     // Positions propeller on the plane
 			glRotatef(cannon_angle_top, 0, 1, 0);         // Rotates propeller   
-			drawCube(P_WIDTH, P_LENGTH, P_HEIGHT, colour_dark_gray);
+			drawCube(P_WIDTH, P_LENGTH, P_HEIGHT*2, colour_dark_gray);
 			DrawCoordinateFrame(1);
 
 			// Cannon (subpart C):
@@ -551,7 +551,7 @@ void DisplayFunc(void)
 				glTranslatef(0, WING_LENGTH, 0);     // Positions propeller at the top
 				glRotatef(cannon_angle_subsubpart, 0, 1, 0);         // Rotates propeller   
 				glRotatef(-90, 1, 0, 0);         // Rotates propeller   
-				DrawCannon(WING_WIDTH, WING_LENGTH, WING_HEIGHT, true);
+				DrawCannon(WING_WIDTH, WING_LENGTH, WING_HEIGHT);
 				DrawCoordinateFrame(1);
 			glPopMatrix();
 		glPopMatrix();
@@ -979,7 +979,7 @@ void DrawTurtleShell(const float width, const float length, const float height)
 //! Draws a propeller.
 //|____________________________________________________________________
 
-void DrawCannon(const float width, const float length, const float height, const bool isInverted)
+void DrawCannon(const float width, const float length, const float height)
 {
 	  // Material properties for the cannon (optional)
   GLfloat ambient[]  = {0.4f, 0.4f, 0.4f, 1.0f};
@@ -991,24 +991,30 @@ void DrawCannon(const float width, const float length, const float height, const
   glMaterialf(GL_FRONT, GL_SHININESS, 100.0f);
 
   // Define cylinder properties
-  float radius = width * 0.5f;  // Adjust radius based on desired width
-  float cylHeight = height;
+  float radius = width * 0.14f;  // Adjust radius based on desired width
+  float cylHeight = height*7.0f; // How short/long the cylinder is
 
   // Push matrix to isolate cannon transformations
   glPushMatrix();
 
-  // Translate the cannon to its position
-  glTranslatef(width * 0.5f, height * 0.5f, 0.0f);  // Adjust for centered placement
+  // Rotate the cannon to be on the XZ plane
+  glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
 
-  // Rotate for inverted cannon (optional)
-  if (isInverted) {
-	glRotatef(180.0f, 0.0f, 1.0f, 0.0f);  // Rotate 180 degrees around Y-axis
-  }
+  // Translate the cannon to its position
+  glTranslatef(0.0f, -height, length*0.7);  // Adjust for centered placement
 
   // Draw cylinder using quadric object
   GLUquadricObj *quadric = gluNewQuadric();
   gluCylinder(quadric, radius, radius, cylHeight, 20, 20);  // 20 segments for smooth cylinder
   gluDeleteQuadric(quadric);
+
+  glPushMatrix();
+	glTranslatef(radius, height/2, length);
+	drawCube(width*0.2, length*0.5, height*0.5, colour_light_red);
+
+	glTranslatef(0.0f, 0.0f, length*0.5);
+	drawCube(width*0.2, length*0.5, height*0.5, colour_lime_green);
+  glPopMatrix();
 
   // Pop matrix to restore transformations
   glPopMatrix();
