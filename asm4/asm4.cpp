@@ -100,7 +100,7 @@ enum KeyModifier {KM_SHIFT = 0, KM_CTRL, KM_ALT};
 // Textures
 enum TextureID {TID_SKYBACK = 0, TID_SKYLEFT, TID_SKYBOTTOM,
 	TID_SKYRIGHT, TID_SKYFRONT, TID_SKYTOP,
-	TID_SEAWEED_0, TID_SEAWEED_1, TID_SANDFLOOR,
+	TID_SEAWEED, TID_ROCK, TID_SANDFLOOR,
 	TEXTURE_NB};  // Texture IDs, with the last ID indicating the total number of textures
 
 // Skybox
@@ -374,7 +374,7 @@ void InitGL(void)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
   // Seaweed 0
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_0]);
+  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED]);
   LoadPPM("seaweed0.ppm", &width, &height, &img_data, 1);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
   free(img_data);
@@ -382,7 +382,7 @@ void InitGL(void)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
   // Seaweed 1
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_1]);
+  glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
   LoadPPM("seaweed1.ppm", &width, &height, &img_data, 1);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
   free(img_data);
@@ -959,7 +959,7 @@ void DrawCubeSeaweed(const float width, const float length, const float height, 
 	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
 
 	// front face
-	glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_0]);
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED]);
 	glBegin(GL_QUADS);
 		glColor3f(colours[0], colours[1], colours[2]);
 		glTexCoord2f(0.0, 1.0);
@@ -982,7 +982,7 @@ void DrawRock(const float s)
   glDisable(GL_LIGHTING);
   
   // Back wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_1]);  // Specify which texture will be used   
+  glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);  // Specify which texture will be used   
   glBegin(GL_QUADS);
 	glColor3f(0.2f, 0.4f, 0.7f);
 	glTexCoord2f(0.0,  1.0);
@@ -996,7 +996,7 @@ void DrawRock(const float s)
   glEnd();
 
   // Left wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_1]);
+  glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
   glBegin(GL_QUADS);
 	glColor3f(0.2f, 0.4f, 0.7f);
 	glTexCoord2f(0.0,  1.0);
@@ -1010,7 +1010,7 @@ void DrawRock(const float s)
   glEnd();
 
   // Bottom wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_1]);
+  glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
   glBegin(GL_QUADS);
 	glColor3f(0.15f, 0.35f, 0.65f);
 	glTexCoord2f(0.0,  1.0);
@@ -1024,7 +1024,7 @@ void DrawRock(const float s)
   glEnd();
 
   // Right wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_1]);
+  glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
 	  glBegin(GL_QUADS);
 	  glColor3f(0.2f, 0.4f, 0.7f);
 	  glTexCoord2f(0.0, 1.0);
@@ -1038,7 +1038,7 @@ void DrawRock(const float s)
   glEnd();
 
   // Front wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_1]);
+  glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
 	  glBegin(GL_QUADS);
 	  glColor3f(0.2f, 0.4f, 0.7f);
 	  glTexCoord2f(0.0, 1.0);
@@ -1052,7 +1052,7 @@ void DrawRock(const float s)
   glEnd();
 
   //Top wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_1]);
+  glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
 	  glBegin(GL_QUADS);
 	glColor3f(0.3f, 0.5f, 0.8f);
 	  glTexCoord2f(0.0, 1.0);
