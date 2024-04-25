@@ -61,7 +61,6 @@ const float colour_dark_gray[4] = { 0.25f, 0.25f, 0.25f, 1.0f };
 const float colour_darker_gray[4] = { 0.17f, 0.17f, 0.17f, 1.0f };
 const float colour_light_red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
 const float colour_seaweed0[4] = { 0.8f, 0.9f, 0.9f, 0.5f };
-const float colour_seaweed1[4] = { 0.0f, 0.0f, 0.0f, 0.5f };
 
 
 // Propeller dimensions (subpart)
@@ -381,9 +380,9 @@ void InitGL(void)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-  // Seaweed 1
+  // Rock
   glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
-  LoadPPM("seaweed1.ppm", &width, &height, &img_data, 1);
+  LoadPPM("rock.ppm", &width, &height, &img_data, 1);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
   free(img_data);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -572,7 +571,7 @@ void DisplayFunc(void)
 		for (int j = 1; j < num_seaweeds; ++j) {
 				glPushMatrix();
 			glTranslatef(SB_SIZE/num_seaweeds*i+50, -300, SB_SIZE/num_seaweeds*j+50);
-			DrawCubeSeaweed(15.0f, 300.0f, 0.0f, colour_seaweed1);
+			DrawCubeSeaweed(15.0f, 300.0f, 0.0f, colour_seaweed0);
 				glPopMatrix();
 		}
 	}
@@ -583,7 +582,7 @@ void DisplayFunc(void)
 				glPushMatrix();
 			glTranslatef(SB_SIZE/num_seaweeds*j, -475, SB_SIZE/num_seaweeds*i+j*SB_SIZE/num_seaweeds);
 			glRotatef(20.0f*i*j, 0.0f, 1.0f, 0.0f);
-			DrawRock(50.0f);
+			DrawRock(100.0f);
 				glPopMatrix();
 		}
 	}
