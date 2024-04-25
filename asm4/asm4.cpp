@@ -51,7 +51,7 @@
 //|___________________
 
 // Number of seaweeds per side e.g. 10 would means 10x10=100 seaweeds total
-const int num_seaweeds = 10;
+const int num_seaweeds = 15 ;
 
 // preset colours
 const float colour_brown[4] = { 0.45f, 0.32f, 0.22f, 1.0f };
@@ -70,12 +70,12 @@ const float WING_LENGTH = 1.5f;
 const float WING_HEIGHT = 0.7f;
 
 // Plane dimensions
-const float P_WIDTH        = 3;
-const float P_LENGTH       = 3;
-const float P_HEIGHT       = 1.5f;
+const float P_WIDTH = 3;
+const float P_LENGTH = 3;
+const float P_HEIGHT = 1.5f;
 
 // Propeller transforms
-const gmtl::Point3f WING_POS(P_WIDTH*3/4, -P_HEIGHT*0.5, P_LENGTH/2.5);     // Propeller position on the plane (w.r.t. plane's frame)
+const gmtl::Point3f WING_POS(P_WIDTH * 3 / 4, -P_HEIGHT * 0.5, P_LENGTH / 2.5);     // Propeller position on the plane (w.r.t. plane's frame)
 const float DELTA_ROTATION = 5.0f;                  // Propeller rotated by 5 degs per input
 
 // Plane transforms
@@ -83,42 +83,44 @@ const gmtl::Vec3f PLANE_FORWARD(0, 0, 1.0f);            // Plane's forward trans
 const float PLANE_ROTATION = 5.0f;                      // Plane rotated by 5 degs per input
 
 // Propeller dimensions (subpart)
-const float PP_WIDTH       = 0.25f;
-const float PP_LENGTH      = 1.5f;
+const float PP_WIDTH = 0.25f;
+const float PP_LENGTH = 1.5f;
 
 // Propeller transforms
-const gmtl::Point3f PROPELLER_POS(P_WIDTH/4, 0, 0);     // Propeller position on the plane (w.r.t. plane's frame)
+const gmtl::Point3f PROPELLER_POS(P_WIDTH / 4, 0, 0);     // Propeller position on the plane (w.r.t. plane's frame)
 const float PROPELLER_ROTATION = 5.0f;                  // Propeller rotated by 5 degs per input
 
 // Camera's view frustum 
-const float CAM_FOV        = 90.0f;                     // Field of view in degs
+const float CAM_FOV = 90.0f;                     // Field of view in degs
 
 // Keyboard modifiers
-enum KeyModifier {KM_SHIFT = 0, KM_CTRL, KM_ALT};
+enum KeyModifier { KM_SHIFT = 0, KM_CTRL, KM_ALT };
 
 // Textures
-enum TextureID {TID_SKYBACK = 0, TID_SKYLEFT, TID_SKYBOTTOM,
+enum TextureID {
+	TID_SKYBACK = 0, TID_SKYLEFT, TID_SKYBOTTOM,
 	TID_SKYRIGHT, TID_SKYFRONT, TID_SKYTOP,
 	TID_SEAWEED, TID_ROCK, TID_SANDFLOOR,
-	TEXTURE_NB};  // Texture IDs, with the last ID indicating the total number of textures
+	TEXTURE_NB
+};  // Texture IDs, with the last ID indicating the total number of textures
 
 // Skybox
-const float SB_SIZE        = 1000.0f;                     // Skybox dimension
+const float SB_SIZE = 1000.0f;                     // Skybox dimension
 
 // Lighting
-const GLfloat NO_LIGHT[] = {0.0, 0.0, 0.0, 1.0};
-const GLfloat AMBIENT_LIGHT[]  = { 0.3, 0.4, 0.5, 1.0 };                
-const GLfloat DIFFUSE_LIGHT[]  = { 0.5, 0.5, 0.5, 1.0 };                
-const GLfloat SPECULAR_LIGHT[] = { 0.5, 0.5, 0.5, 1.0 };
+const GLfloat NO_LIGHT[] = { 0.0, 0.0, 0.0, 1.0 };
+const GLfloat AMBIENT_LIGHT[] = { 0.3, 0.4, 0.5, 1.0 };
+const GLfloat DIFFUSE_LIGHT[] = { 0.8, 0.9, 1.0, 1.0 };
+const GLfloat SPECULAR_LIGHT[] = { 0.5, 0.6, 0.7, 1.0 };
 
 // Materials
-const GLfloat DARKRED_COL[]     = { 0.1, 0.0, 0.0, 1.0 };
-const GLfloat BRIGHTRED_COL[]   = { 0.7, 0.0, 0.0, 1.0 };
-const GLfloat DARKBLUE_COL[]    = { 0.0, 0.1, 0.0, 1.0 };      
-const GLfloat BRIGHTBLUE_COL[]  = { 0.0, 0.0, 0.7, 1.0 };
-const GLfloat DARK_COL[]        = { 0.1, 0.1, 0.1, 1.0 };      
+const GLfloat DARKRED_COL[] = { 0.1, 0.0, 0.0, 1.0 };
+const GLfloat BRIGHTRED_COL[] = { 0.7, 0.0, 0.0, 1.0 };
+const GLfloat DARKBLUE_COL[] = { 0.0, 0.1, 0.0, 1.0 };
+const GLfloat BRIGHTBLUE_COL[] = { 0.0, 0.0, 0.7, 1.0 };
+const GLfloat DARK_COL[] = { 0.1, 0.1, 0.1, 1.0 };
 const GLfloat MEDIUMWHITE_COL[] = { 0.7, 0.7, 0.7, 1.0 };
-const GLfloat SPECULAR_COL[]    = { 0.3, 0.6, 1.0, 1.0 };
+const GLfloat SPECULAR_COL[] = { 0.3, 0.6, 1.0, 1.0 };
 
 //|___________________
 //|
@@ -126,8 +128,8 @@ const GLfloat SPECULAR_COL[]    = { 0.3, 0.6, 1.0, 1.0 };
 //|___________________
 
 // Track window dimensions, initialized to 800x600
-int w_width    = 800;
-int w_height   = 600;
+int w_width = 800;
+int w_height = 600;
 
 // Plane pose (position-quaternion pair)
 gmtl::Point4f plane_p;      // Position (using explicit homogeneous form; see Quaternion example code)
@@ -157,15 +159,15 @@ float cannon_angle_subsubpart = 0; // subsub part propeller
 
 // Mouse & keyboard
 int mx_prev = 0, my_prev = 0;
-bool mbuttons[3]   = {false, false, false};
-bool kmodifiers[3] = {false, false, false};
+bool mbuttons[3] = { false, false, false };
+bool kmodifiers[3] = { false, false, false };
 
 // Cameras
-int cam_id         = 0;                                // Selects which camera to view
-int camctrl_id     = 0;                                // Selects which camera to control
-float distance[2]  = { 30.0f,  30.0f};                 // Distance of the camera from world's origin
-float elevation[2] = {-45.0f, -45.0f};                 // Elevation of the camera (in degs)
-float azimuth[2]   = { 15.0f,  15.0f};                 // Azimuth of the camera (in degs)
+int cam_id = 0;                                // Selects which camera to view
+int camctrl_id = 0;                                // Selects which camera to control
+float distance[2] = { 30.0f,  30.0f };                 // Distance of the camera from world's origin
+float elevation[2] = { -45.0f, -45.0f };                 // Elevation of the camera (in degs)
+float azimuth[2] = { 15.0f,  15.0f };                 // Azimuth of the camera (in degs)
 
 // Lighting
 gmtl::Point4f light_pos(0.0, 5.0, 5.0, 1.0);
@@ -181,7 +183,7 @@ GLuint textures[TEXTURE_NB];                           // Textures
 //| Function Prototypes
 //|___________________
 
-gmtl::Vec3f FindNormal(const gmtl::Point3f &p1, const gmtl::Point3f &p2, const gmtl::Point3f &p3);
+gmtl::Vec3f FindNormal(const gmtl::Point3f& p1, const gmtl::Point3f& p2, const gmtl::Point3f& p3);
 void InitTransforms();
 void InitGL(void);
 void DisplayFunc(void);
@@ -193,18 +195,18 @@ void DrawCoordinateFrame(const float l);
 void DrawPlaneBody(const float width, const float length, const float height);
 void DrawPropeller(const float width, const float length);
 void DrawSkybox(const float s);
-void SetLight(const gmtl::Point4f &pos, const bool is_ambient, const bool is_diffuse, const bool is_specular);
-void LoadPPM(const char *fname, unsigned int *w, unsigned int *h, unsigned char **data, const int mallocflag);
+void SetLight(const gmtl::Point4f& pos, const bool is_ambient, const bool is_diffuse, const bool is_specular);
+void LoadPPM(const char* fname, unsigned int* w, unsigned int* h, unsigned char** data, const int mallocflag);
 
 
 void DrawTurtleShell(const float width, const float length, const float height);
 void DrawWing(const float width, const float length, const float height, const bool isInverted);
 void DrawCannon(const float width, const float length, const float height);
 void DrawCube(const float width, const float length, const float height, const float colours[4]);
-void DrawCubeSeaweed(const float width, const float length, const float height, const float colours[4]);
-void DrawCubeSeaweedDarker(const float width, const float length, const float height, const float colours[4]);
+void DrawSeaweed(const float width, const float length, const float height, const float colours[4]);
 void DrawSandFloor(const float width, const float length);
 void DrawRock(const float s);
+void DrawSphere(float radius);
 
 //|____________________________________________________________________
 //|
@@ -218,13 +220,13 @@ void DrawRock(const float s);
 //! Finds the surface normal of a triangle. The input must be in CCW order.
 //|____________________________________________________________________
 
-gmtl::Vec3f FindNormal(const gmtl::Point3f &p1, 
-					   const gmtl::Point3f &p2, 
-					   const gmtl::Point3f &p3)
+gmtl::Vec3f FindNormal(const gmtl::Point3f& p1,
+	const gmtl::Point3f& p2,
+	const gmtl::Point3f& p3)
 {
-	gmtl::Vec3f v12 = p2-p1;
-	gmtl::Vec3f v13 = p3-p1;
-	
+	gmtl::Vec3f v12 = p2 - p1;
+	gmtl::Vec3f v13 = p3 - p1;
+
 	gmtl::Vec3f normal;
 	gmtl::cross(normal, v12, v13);
 	gmtl::normalize(normal);
@@ -244,27 +246,27 @@ gmtl::Vec3f FindNormal(const gmtl::Point3f &p1,
 
 void InitTransforms()
 {
-  const float COSTHETA_D2  = cos(gmtl::Math::deg2Rad(PLANE_ROTATION/2));  // cos() and sin() expect radians 
-  const float SINTHETA_D2  = sin(gmtl::Math::deg2Rad(PLANE_ROTATION/2));
+	const float COSTHETA_D2 = cos(gmtl::Math::deg2Rad(PLANE_ROTATION / 2));  // cos() and sin() expect radians 
+	const float SINTHETA_D2 = sin(gmtl::Math::deg2Rad(PLANE_ROTATION / 2));
 
-  // Inits plane pose
-  plane_p.set(1.0f, 0.0f, 4.0f, 1.0f);
-  plane_q.set(0, 0, 0, 1);
+	// Inits plane pose
+	plane_p.set(1.0f, 0.0f, 4.0f, 1.0f);
+	plane_q.set(0, 0, 0, 1);
 
-  // Z rotations (roll)
-  zrotp_q.set(0, 0, SINTHETA_D2, COSTHETA_D2);      // +Z
-  zrotn_q = gmtl::makeConj(zrotp_q);                // -Z
+	// Z rotations (roll)
+	zrotp_q.set(0, 0, SINTHETA_D2, COSTHETA_D2);      // +Z
+	zrotn_q = gmtl::makeConj(zrotp_q);                // -Z
 
-  // X rotation (pitch)
-  xrotp_q.set(SINTHETA_D2, 0, 0, COSTHETA_D2);      // +X
+	// X rotation (pitch)
+	xrotp_q.set(SINTHETA_D2, 0, 0, COSTHETA_D2);      // +X
 
-  // Y rotation (yaw)
-  yrotp_q.set(0, SINTHETA_D2, 0, COSTHETA_D2);      // +Y
-  
-  // TODO: Initializes the remaining transforms
+	// Y rotation (yaw)
+	yrotp_q.set(0, SINTHETA_D2, 0, COSTHETA_D2);      // +Y
 
-  xrotn_q = gmtl::makeConj(xrotp_q); // -
-  yrotn_q = gmtl::makeConj(yrotp_q); // -Y
+	// TODO: Initializes the remaining transforms
+
+	xrotn_q = gmtl::makeConj(xrotp_q); // -
+	yrotn_q = gmtl::makeConj(yrotp_q); // -Y
 }
 
 //|____________________________________________________________________
@@ -279,122 +281,122 @@ void InitTransforms()
 
 void InitGL(void)
 {
-  unsigned char *img_data;               // Texture image data
-  unsigned int  width;                   // Texture width
-  unsigned int  height;                  // Texture height
+	unsigned char* img_data;               // Texture image data
+	unsigned int  width;                   // Texture width
+	unsigned int  height;                  // Texture height
 
-  glClearColor(0.7f, 0.7f, 0.7f, 1.0f); 
-  glEnable(GL_DEPTH_TEST); 
-  glShadeModel(GL_SMOOTH);
+	glClearColor(0.7f, 0.7f, 0.7f, 1.0f);
+	glEnable(GL_DEPTH_TEST);
+	glShadeModel(GL_SMOOTH);
 
-//|___________________________________________________________________
-//|
-//| Setup lighting
-//|___________________________________________________________________
+	//|___________________________________________________________________
+	//|
+	//| Setup lighting
+	//|___________________________________________________________________
 
-  // Disable global ambient
-  glLightModelfv(GL_LIGHT_MODEL_AMBIENT, NO_LIGHT);
+	  // Disable global ambient
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, NO_LIGHT);
 
-  // NOTE: for specular reflections, the "local viewer" model produces better
-  // results than the default, but is slower. The default would not use the correct
-  // vertex-to-eyepoint vector, treating it as always parallel to Z.
-  glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
+	// NOTE: for specular reflections, the "local viewer" model produces better
+	// results than the default, but is slower. The default would not use the correct
+	// vertex-to-eyepoint vector, treating it as always parallel to Z.
+	glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 
-  // Enable two sided lighting
-  glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+	// Enable two sided lighting
+	glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
-  // Enable lighting
-  glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
+	// Enable lighting
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 
-//|___________________________________________________________________
-//|
-//| Setup texturing
-//|___________________________________________________________________
+	//|___________________________________________________________________
+	//|
+	//| Setup texturing
+	//|___________________________________________________________________
 
-  // Describe how data will be stored in memory
-  glPixelStorei(GL_UNPACK_ALIGNMENT, 1);  
+	  // Describe how data will be stored in memory
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-  // Select the method for combining texture color with the lighting equation
-	// (look up the third parameter)
-  glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	// Select the method for combining texture color with the lighting equation
+	  // (look up the third parameter)
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	// Generate and setup texture objects
-  glGenTextures(TEXTURE_NB, textures);  // two colours: colour from texture, and colour from light eq
-  // can ask opengl to ignore light
+	glGenTextures(TEXTURE_NB, textures);  // two colours: colour from texture, and colour from light eq
+	// can ask opengl to ignore light
 
-  // Skybox back wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SKYBACK]);
-  LoadPPM("uw_back.ppm", &width, &height, &img_data, 1);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
-  free(img_data);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);        
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	// Skybox back wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SKYBACK]);
+	LoadPPM("uw_back.ppm", &width, &height, &img_data, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
+	free(img_data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-  // Skybox left wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SKYLEFT]);
-  LoadPPM("uw_left.ppm", &width, &height, &img_data, 1);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
-  free(img_data);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);        
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	// Skybox left wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SKYLEFT]);
+	LoadPPM("uw_left.ppm", &width, &height, &img_data, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
+	free(img_data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-  // Skybox top wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SKYBOTTOM]);
-  LoadPPM("uw_bottom.ppm", &width, &height, &img_data, 1);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
-  free(img_data);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);        
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	// Skybox top wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SKYBOTTOM]);
+	LoadPPM("uw_bottom.ppm", &width, &height, &img_data, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
+	free(img_data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-  // TODO: Initializes the remaining textures
-  // Skybox right wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SKYRIGHT]);
-  LoadPPM("uw_right.ppm", &width, &height, &img_data, 1);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
-  free(img_data);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	// TODO: Initializes the remaining textures
+	// Skybox right wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SKYRIGHT]);
+	LoadPPM("uw_right.ppm", &width, &height, &img_data, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
+	free(img_data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-  // Skybox front wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SKYFRONT]);
-  LoadPPM("uw_front.ppm", &width, &height, &img_data, 1);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
-  free(img_data);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	// Skybox front wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SKYFRONT]);
+	LoadPPM("uw_front.ppm", &width, &height, &img_data, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
+	free(img_data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-  // Skybox top wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SKYTOP]);
-  LoadPPM("uw_top.ppm", &width, &height, &img_data, 1);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
-  free(img_data);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	// Skybox top wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SKYTOP]);
+	LoadPPM("uw_top.ppm", &width, &height, &img_data, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
+	free(img_data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-  // Seaweed 0
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED]);
-  LoadPPM("seaweed0.ppm", &width, &height, &img_data, 1);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
-  free(img_data);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	// Seaweed 0
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED]);
+	LoadPPM("seaweed0.ppm", &width, &height, &img_data, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
+	free(img_data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-  // Rock
-  glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
-  LoadPPM("rock.ppm", &width, &height, &img_data, 1);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
-  free(img_data);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	// Rock
+	glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
+	LoadPPM("rock.ppm", &width, &height, &img_data, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
+	free(img_data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
-//Sand floor texture
-glBindTexture(GL_TEXTURE_2D, textures[TID_SANDFLOOR]);
-LoadPPM("sand.ppm", &width, &height, &img_data, 1);
-glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
-free(img_data);
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//Sand floor texture
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SANDFLOOR]);
+	LoadPPM("sand.ppm", &width, &height, &img_data, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
+	free(img_data);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 }
 
 //|____________________________________________________________________
@@ -409,73 +411,76 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 void DisplayFunc(void)
 {
-  gmtl::AxisAnglef aa;    // Converts plane's quaternion to axis-angle form to be used by glRotatef()
-  gmtl::Vec3f axis;       // Axis component of axis-angle representation
-  float angle;            // Angle component of axis-angle representation
+	gmtl::AxisAnglef aa;    // Converts plane's quaternion to axis-angle form to be used by glRotatef()
+	gmtl::Vec3f axis;       // Axis component of axis-angle representation
+	float angle;            // Angle component of axis-angle representation
 
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluPerspective(CAM_FOV, (float)w_width/w_height, 0.1f, 1000.0f);     // Check MSDN: google "gluPerspective msdn"
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluPerspective(CAM_FOV, (float)w_width / w_height, 0.1f, 1000.0f);     // Check MSDN: google "gluPerspective msdn"
 
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 
-//|____________________________________________________________________
-//|
-//| Setting up view transform by:
-//| "move up to the world frame by composing all of the (inverse) transforms from the camera up to the world node"
-//|____________________________________________________________________
+	//|____________________________________________________________________
+	//|
+	//| Setting up view transform by:
+	//| "move up to the world frame by composing all of the (inverse) transforms from the camera up to the world node"
+	//|____________________________________________________________________
 
-  switch (cam_id) {
+	switch (cam_id) {
 	case 0:
-	  // For the world-relative camera
-	  glTranslatef(0, 0, -distance[0]);
-	  glRotatef(-elevation[0], 1, 0, 0);
-	  glRotatef(-azimuth[0], 0, 1, 0);
-	  break;
+		// For the world-relative camera
+		glTranslatef(0, 0, -distance[0]);
+		glRotatef(-elevation[0], 1, 0, 0);
+		glRotatef(-azimuth[0], 0, 1, 0);
+		break;
 
 	case 1:
-	  // For plane2's camera
-	  glTranslatef(0, 0, -distance[1]);
-	  glRotatef(-elevation[1], 1, 0, 0);
-	  glRotatef(-azimuth[1], 0, 1, 0);
+		// For plane2's camera
+		glTranslatef(0, 0, -distance[1]);
+		glRotatef(-elevation[1], 1, 0, 0);
+		glRotatef(-azimuth[1], 0, 1, 0);
 
-	  gmtl::set(aa, plane_q);                    // Converts plane's quaternion to axis-angle form to be used by glRotatef()
-	  axis  = aa.getAxis();
-	  angle = aa.getAngle();
-	  glRotatef(-gmtl::Math::rad2Deg(angle), axis[0], axis[1], axis[2]);
-	  glTranslatef(-plane_p[0], -plane_p[1], -plane_p[2]);      
-	  break;
+		gmtl::set(aa, plane_q);                    // Converts plane's quaternion to axis-angle form to be used by glRotatef()
+		axis = aa.getAxis();
+		angle = aa.getAngle();
+		glRotatef(-gmtl::Math::rad2Deg(angle), axis[0], axis[1], axis[2]);
+		glTranslatef(-plane_p[0], -plane_p[1], -plane_p[2]);
+		break;
 
-	  // TODO: Add case for the plane1's camera
+	}
 
-  }
+	//|____________________________________________________________________
+	//|
+	//| Draw traversal begins, start from world (root) node
+	//|____________________________________________________________________
 
-//|____________________________________________________________________
-//|
-//| Draw traversal begins, start from world (root) node
-//|____________________________________________________________________
+	  // Set light position wrt world
+	SetLight(light_pos, is_ambient_on, is_diffuse_on, is_specular_on);
 
-  // Set light position wrt world
-  SetLight(light_pos, is_ambient_on, is_diffuse_on, is_specular_on);
-  //DrawLight();
-
-  // World node: draws world coordinate frame
-  DrawCoordinateFrame(10);
-  DrawSkybox(SB_SIZE);
-
-  // World-relative camera:
-  if (cam_id != 0) {
-	glPushMatrix();        
-	  glRotatef(azimuth[0], 0, 1, 0);
-	  glRotatef(elevation[0], 1, 0, 0);
-	  glTranslatef(0, 0, distance[0]);
-	  DrawCoordinateFrame(1);
+	// Draw a sphere at the light position
+	glPushMatrix();
+		glTranslatef(light_pos[0], light_pos[1], light_pos[2]);
+		DrawSphere(0.5f); // Adjust the radius as desired
 	glPopMatrix();
-  }
-  
+
+	// World node: draws world coordinate frame
+	DrawCoordinateFrame(10);
+	DrawSkybox(SB_SIZE);
+
+	// World-relative camera:
+	if (cam_id != 0) {
+		glPushMatrix();
+		glRotatef(azimuth[0], 0, 1, 0);
+		glRotatef(elevation[0], 1, 0, 0);
+		glTranslatef(0, 0, distance[0]);
+		DrawCoordinateFrame(1);
+		glPopMatrix();
+	}
+
 	// Turtle 2 body:
 	glPushMatrix();
 		gmtl::set(aa, plane_q);                    // Converts plane's quaternion to axis-angle form to be used by glRotatef()
@@ -483,22 +488,22 @@ void DisplayFunc(void)
 		angle = aa.getAngle();
 		glTranslatef(plane_p[0], plane_p[1], plane_p[2]);
 		glRotatef(gmtl::Math::rad2Deg(angle), axis[0], axis[1], axis[2]);
-		DrawTurtleShell(P_WIDTH*1.5, P_LENGTH*1.5, P_HEIGHT*2); // turtle plane base
+		DrawTurtleShell(P_WIDTH * 1.5, P_LENGTH * 1.5, P_HEIGHT * 2); // turtle plane base
 		DrawCoordinateFrame(3);
 
 		// Turtle 2's camera:
 		glPushMatrix();
-		  glRotatef(azimuth[1], 0, 1, 0);
-		  glRotatef(elevation[1], 1, 0, 0);
-		  glTranslatef(0, 0, distance[1]);
-		  DrawCoordinateFrame(1);
+			glRotatef(azimuth[1], 0, 1, 0);
+			glRotatef(elevation[1], 1, 0, 0);
+			glTranslatef(0, 0, distance[1]);
+			DrawCoordinateFrame(1);
 		glPopMatrix();
 
 		//// head
 		glPushMatrix();
 			glTranslatef(0, -0.1f * P_HEIGHT, 0.7f * P_LENGTH);
 			DrawCube(0.7f * P_WIDTH, 0.7f * P_LENGTH, 0.85f * P_HEIGHT, colour_lime_green);
-			
+
 			// left eye
 			glPushMatrix();
 				glTranslatef(-0.8f, -0.20f, 1.15f);
@@ -510,7 +515,6 @@ void DisplayFunc(void)
 				glTranslatef(0.8f, -0.20f, 1.15f);
 				DrawCube(0.11f * P_WIDTH, 0.06f * P_LENGTH, 0.11f * P_HEIGHT, colour_darker_gray);
 			glPopMatrix();
-			
 		glPopMatrix();
 
 		// Right front wing (subpart A):
@@ -549,7 +553,7 @@ void DisplayFunc(void)
 		glPushMatrix();
 			glTranslatef(0, P_HEIGHT, 0);     // Positions propeller on the plane
 			glRotatef(cannon_angle_top, 0, 1, 0);         // Rotates propeller   
-			DrawCube(P_WIDTH, P_LENGTH, P_HEIGHT*2, colour_dark_gray);
+			DrawCube(P_WIDTH, P_LENGTH, P_HEIGHT * 2, colour_dark_gray);
 			DrawCoordinateFrame(1);
 
 			// Cannon (subpart C):
@@ -569,37 +573,41 @@ void DisplayFunc(void)
 	// Draw extra seaweeds with different textures
 	for (int i = 1; i < num_seaweeds; ++i) {
 		for (int j = 1; j < num_seaweeds; ++j) {
+			if (j*i % 5 != 0) { // semi-random
 				glPushMatrix();
-			glTranslatef(SB_SIZE/num_seaweeds*i+50, -300, SB_SIZE/num_seaweeds*j+50);
-			DrawCubeSeaweed(15.0f, 300.0f, 0.0f, colour_seaweed0);
-				glPopMatrix();
+					glTranslatef(SB_SIZE / num_seaweeds * i + 50, -500, SB_SIZE / num_seaweeds * j + 50);
+					glRotatef(20.0f * i * j, 0.0f, 1.0f, 0.0f);
+				DrawSeaweed(15.0f, float((200 * i * j) % 700 + 100), 0.0f, colour_seaweed0);
+			glPopMatrix();
+			}
+
 		}
 	}
 
-	// Draw extra darker seaweeds with different textures
-	for (int i = 1; i < num_seaweeds; i+=i*2) {
-		for (int j = 1; j < num_seaweeds; j+=i+1) {
-				glPushMatrix();
-			glTranslatef(SB_SIZE/num_seaweeds*j, -475, SB_SIZE/num_seaweeds*i+j*SB_SIZE/num_seaweeds);
-			glRotatef(20.0f*i*j, 0.0f, 1.0f, 0.0f);
-			DrawRock(100.0f);
-				glPopMatrix();
+	// Draw extra rocks with different textures
+	for (int i = 1; i < num_seaweeds; i += i * 2) {
+		for (int j = 1; j < num_seaweeds; j += i + 1) {
+			glPushMatrix();
+				glTranslatef(SB_SIZE / num_seaweeds * j, -475, SB_SIZE / num_seaweeds * i + j * SB_SIZE / num_seaweeds);
+				glRotatef(20.0f * i * j, 0.0f, 1.0f, 0.0f);
+				DrawRock(float(50 * j % 200));
+			glPopMatrix();
 		}
 	}
 
 	// Draw sandfloors
-	for (int i = 1; i < num_seaweeds; i+=i*2) {
-		for (int j = 1; j < num_seaweeds; j+=i+1) {
-				glPushMatrix();
-				// Not sure what I'm doing, trying to do a semi-random position
-			glTranslatef(SB_SIZE/num_seaweeds*i+j*SB_SIZE/num_seaweeds, -SB_SIZE/2+2, SB_SIZE/num_seaweeds*j);
-			glRotatef(20.0f*i*j, 0.0f, 1.0f, 0.0f);
-			DrawSandFloor(120.0f, 120.0f);
-				glPopMatrix();
+	for (int i = 1; i < num_seaweeds; i += i * 2) {
+		for (int j = 1; j < num_seaweeds; j += i + 1) {
+			glPushMatrix();
+			// Not sure what I'm doing, trying to do a semi-random position
+			glTranslatef(i * SB_SIZE / num_seaweeds, -SB_SIZE / 2 + 2, SB_SIZE / num_seaweeds * j);
+			glRotatef(20.0f * i * j, 0.0f, 1.0f, 0.0f);
+			DrawSandFloor(float(60 * i % 200), float(60 * i % 200));
+			glPopMatrix();
 		}
 	}
 
-  glutSwapBuffers();                          // Replaces glFlush() to use double buffering
+	glutSwapBuffers();                          // Replaces glFlush() to use double buffering
 }
 
 //|____________________________________________________________________
@@ -616,36 +624,36 @@ void DisplayFunc(void)
 
 void KeyboardFunc(unsigned char key, int x, int y)
 {
-  switch (key) {
-//|____________________________________________________________________
-//|
-//| Camera switch
-//|____________________________________________________________________
+	switch (key) {
+		//|____________________________________________________________________
+		//|
+		//| Camera switch
+		//|____________________________________________________________________
 
 	case 'v': // Select camera to view
-	  cam_id = (cam_id + 1) % 2;
-	  printf("View camera = %d\n", cam_id);
-	  break;
+		cam_id = (cam_id + 1) % 2;
+		printf("View camera = %d\n", cam_id);
+		break;
 	case 'b': // Select camera to control
-	  camctrl_id = (camctrl_id + 1) % 2;
-	  printf("Control camera = %d\n", camctrl_id);
-	  break;
+		camctrl_id = (camctrl_id + 1) % 2;
+		printf("Control camera = %d\n", camctrl_id);
+		break;
 
-//|____________________________________________________________________
-//|
-//| Plane controls
-//|____________________________________________________________________
+		//|____________________________________________________________________
+		//|
+		//| Plane controls
+		//|____________________________________________________________________
 
 	case 's': { // Forward translation of the plane (+Z translation)  
-	  gmtl::Quatf v_q = plane_q * gmtl::Quatf(PLANE_FORWARD[0], PLANE_FORWARD[1], PLANE_FORWARD[2], 0) * gmtl::makeConj(plane_q);
-	  plane_p         = plane_p + v_q.mData;
-	  } break;
+		gmtl::Quatf v_q = plane_q * gmtl::Quatf(PLANE_FORWARD[0], PLANE_FORWARD[1], PLANE_FORWARD[2], 0) * gmtl::makeConj(plane_q);
+		plane_p = plane_p + v_q.mData;
+	} break;
 	case 'f': { // Backward translation of the plane (-Z translation)
-	  gmtl::Quatf v_q = plane_q * gmtl::Quatf(-PLANE_FORWARD[0], -PLANE_FORWARD[1], -PLANE_FORWARD[2], 0) * gmtl::makeConj(plane_q);
-	  plane_p         = plane_p + v_q.mData;
-	  } break;
+		gmtl::Quatf v_q = plane_q * gmtl::Quatf(-PLANE_FORWARD[0], -PLANE_FORWARD[1], -PLANE_FORWARD[2], 0) * gmtl::makeConj(plane_q);
+		plane_p = plane_p + v_q.mData;
+	} break;
 
-	// roll /////////////////
+		// roll /////////////////
 	case 'e': // Rolls the plane (+Z rot)
 		plane_q = plane_q * zrotp_q;
 		break;
@@ -653,7 +661,7 @@ void KeyboardFunc(unsigned char key, int x, int y)
 		plane_q = plane_q * zrotn_q;
 		break;
 
-	// yaw /////////////////
+		// yaw /////////////////
 	case 'a': // Yaws the plane (+Y rot)
 		plane_q = plane_q * yrotp_q;
 		break;
@@ -661,7 +669,7 @@ void KeyboardFunc(unsigned char key, int x, int y)
 		plane_q = plane_q * yrotn_q;
 		break;
 
-	// pitch /////////////////
+		// pitch /////////////////
 	case 'z': // Pitches the plane (+X rot)
 		plane_q = plane_q * xrotp_q;
 		break;
@@ -669,35 +677,35 @@ void KeyboardFunc(unsigned char key, int x, int y)
 		plane_q = plane_q * xrotn_q;
 		break;
 
-//|____________________________________________________________________
-//|
-//| Propeller controls (subpart)
-//|____________________________________________________________________
+		//|____________________________________________________________________
+		//|
+		//| Propeller controls (subpart)
+		//|____________________________________________________________________
 
 	case 'r': // Rotates propeller 
-	  pp_angle += PROPELLER_ROTATION;
-	  break;
+		pp_angle += PROPELLER_ROTATION;
+		break;
 
-//|____________________________________________________________________
-//|
-//| Lighting controls
-//|____________________________________________________________________
+		//|____________________________________________________________________
+		//|
+		//| Lighting controls
+		//|____________________________________________________________________
 
 	case 'i': // Light up (+Y translation)
-	  light_pos[1]++;
-	  printf("Light-Y = %.2f\n", light_pos[1]);
-	  break;
+		light_pos[1]++;
+		printf("Light-Y = %.2f\n", light_pos[1]);
+		break;
 	case 'k': // Light down (-Y translation)
-	  light_pos[1]--;
-	  printf("Light-Y = %.2f\n", light_pos[1]);
-	  break;
+		light_pos[1]--;
+		printf("Light-Y = %.2f\n", light_pos[1]);
+		break;
 
 	case '9': // Toggles diffuse light ON/OFF
-	  is_diffuse_on = !is_diffuse_on;
-	  printf("Light-diffuse = %s\n", is_diffuse_on ? "ON" : "OFF");
-	  break;
+		is_diffuse_on = !is_diffuse_on;
+		printf("Light-diffuse = %s\n", is_diffuse_on ? "ON" : "OFF");
+		break;
 
-	// TODO: Add the remaining controls/transforms
+		// TODO: Add the remaining controls/transforms
 
 	case 'o': // Light right (+X translation)
 		light_pos[0]++;
@@ -728,9 +736,9 @@ void KeyboardFunc(unsigned char key, int x, int y)
 		is_specular_on = !is_specular_on;
 		printf("Light-specular = %s\n", is_specular_on ? "ON" : "OFF");
 		break;
-  }
+	}
 
-  glutPostRedisplay();                    // Asks GLUT to redraw the screen
+	glutPostRedisplay();                    // Asks GLUT to redraw the screen
 }
 
 //|____________________________________________________________________
@@ -748,24 +756,25 @@ void KeyboardFunc(unsigned char key, int x, int y)
 
 void MouseFunc(int button, int state, int x, int y)
 {
-  int km_state;
+	int km_state;
 
-  // Updates button's sate and mouse coordinates
-  if (state == GLUT_DOWN) {
-	mbuttons[button] = true;
-	mx_prev          = x;
-	my_prev          = y;
-  } else {
-	mbuttons[button] = false;
-  }
+	// Updates button's sate and mouse coordinates
+	if (state == GLUT_DOWN) {
+		mbuttons[button] = true;
+		mx_prev = x;
+		my_prev = y;
+	}
+	else {
+		mbuttons[button] = false;
+	}
 
-  // Updates keyboard modifiers
-  km_state = glutGetModifiers();
-  kmodifiers[KM_SHIFT] = km_state & GLUT_ACTIVE_SHIFT ? true : false;
-  kmodifiers[KM_CTRL]  = km_state & GLUT_ACTIVE_CTRL  ? true : false;
-  kmodifiers[KM_ALT]   = km_state & GLUT_ACTIVE_ALT   ? true : false;
+	// Updates keyboard modifiers
+	km_state = glutGetModifiers();
+	kmodifiers[KM_SHIFT] = km_state & GLUT_ACTIVE_SHIFT ? true : false;
+	kmodifiers[KM_CTRL] = km_state & GLUT_ACTIVE_CTRL ? true : false;
+	kmodifiers[KM_ALT] = km_state & GLUT_ACTIVE_ALT ? true : false;
 
-  //glutPostRedisplay();      // Asks GLUT to redraw the screen
+	//glutPostRedisplay();      // Asks GLUT to redraw the screen
 }
 
 //|____________________________________________________________________
@@ -781,39 +790,40 @@ void MouseFunc(int button, int state, int x, int y)
 
 void MotionFunc(int x, int y)
 {
-  int dx, dy, d;
+	int dx, dy, d;
 
-  if (mbuttons[GLUT_LEFT_BUTTON] || mbuttons[GLUT_RIGHT_BUTTON]) {
-	// Computes distances the mouse has moved
-	dx      = x - mx_prev;
-	dy      = y - my_prev;
+	if (mbuttons[GLUT_LEFT_BUTTON] || mbuttons[GLUT_RIGHT_BUTTON]) {
+		// Computes distances the mouse has moved
+		dx = x - mx_prev;
+		dy = y - my_prev;
 
-	// Updates mouse coordinates
-	mx_prev = x;
-	my_prev = y;
+		// Updates mouse coordinates
+		mx_prev = x;
+		my_prev = y;
 
-	// Hold left button to rotate camera
-	if (mbuttons[GLUT_LEFT_BUTTON]) {
-	  if (!kmodifiers[KM_CTRL]) {        
-		elevation[camctrl_id] += dy;            // Elevation update
-	  }
-	  if (!kmodifiers[KM_SHIFT]) {      
-		azimuth[camctrl_id] += dx;             // Azimuth update
-	  }
+		// Hold left button to rotate camera
+		if (mbuttons[GLUT_LEFT_BUTTON]) {
+			if (!kmodifiers[KM_CTRL]) {
+				elevation[camctrl_id] += dy;            // Elevation update
+			}
+			if (!kmodifiers[KM_SHIFT]) {
+				azimuth[camctrl_id] += dx;             // Azimuth update
+			}
+		}
+
+		// Hold right button to zoom
+		if (mbuttons[GLUT_RIGHT_BUTTON]) {
+			if (abs(dx) >= abs(dy)) {
+				d = dx;
+			}
+			else {
+				d = -dy;
+			}
+			distance[camctrl_id] += d;
+		}
+
+		glutPostRedisplay();      // Asks GLUT to redraw the screen
 	}
-
-	// Hold right button to zoom
-	if (mbuttons[GLUT_RIGHT_BUTTON]) {
-	  if (abs(dx) >= abs(dy)) {
-		d = dx;
-	  } else {
-		d = -dy;
-	  }
-	  distance[camctrl_id] += d;    
-	}
-
-	glutPostRedisplay();      // Asks GLUT to redraw the screen
-  }
 }
 
 //|____________________________________________________________________
@@ -828,10 +838,10 @@ void MotionFunc(int x, int y)
 
 void ReshapeFunc(int w, int h)
 {
-  // Track the current window dimensions
-  w_width  = w;
-  w_height = h;
-  glViewport(0, 0, (GLsizei) w_width, (GLsizei) w_height);
+	// Track the current window dimensions
+	w_width = w;
+	w_height = h;
+	glViewport(0, 0, (GLsizei)w_width, (GLsizei)w_height);
 }
 
 //|____________________________________________________________________
@@ -846,26 +856,26 @@ void ReshapeFunc(int w, int h)
 
 void DrawCoordinateFrame(const float l)
 {
-  glDisable(GL_LIGHTING);
+	glDisable(GL_LIGHTING);
 
-  glBegin(GL_LINES);
+	glBegin(GL_LINES);
 	// X axis is red
-	glColor3f( 1.0f, 0.0f, 0.0f);
+	glColor3f(1.0f, 0.0f, 0.0f);
 	glVertex3f(0.0f, 0.0f, 0.0f);
-	  glVertex3f(   l, 0.0f, 0.0f);
+	glVertex3f(l, 0.0f, 0.0f);
 
 	// Y axis is green
-	glColor3f( 0.0f, 1.0f, 0.0f);
+	glColor3f(0.0f, 1.0f, 0.0f);
 	glVertex3f(0.0f, 0.0f, 0.0f);
-	  glVertex3f(0.0f,    l, 0.0f);
+	glVertex3f(0.0f, l, 0.0f);
 
 	// Z axis is blue
-	glColor3f( 0.0f, 0.0f, 1.0f);
+	glColor3f(0.0f, 0.0f, 1.0f);
 	glVertex3f(0.0f, 0.0f, 0.0f);
-	  glVertex3f(0.0f, 0.0f,    l);
-  glEnd();
+	glVertex3f(0.0f, 0.0f, l);
+	glEnd();
 
-  glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);
 }
 
 void DrawCube(const float width, const float length, const float height, const float colours[4]) {
@@ -874,9 +884,9 @@ void DrawCube(const float width, const float length, const float height, const f
 	float l2 = length / 2;
 
 	// Sets materials
-	glMaterialf(GL_FRONT_AND_BACK,  GL_SHININESS, 20.0);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  SPECULAR_COL);
-  
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 20.0);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, SPECULAR_COL);
+
 
 	glBegin(GL_QUADS);
 
@@ -930,23 +940,22 @@ void DrawCube(const float width, const float length, const float height, const f
 
 void DrawTurtleShell(const float width, const float length, const float height)
 {
-
 	// shell
 	DrawCube(width, length, height, colour_brown);
 
 	// black cannon strap
-	DrawCube(width*1.1, length*0.2, height*1.1, colour_darker_gray);
+	DrawCube(width * 1.1, length * 0.2, height * 1.1, colour_darker_gray);
 }
 
-void DrawCubeSeaweed(const float width, const float length, const float height, const float colours[4]) {
+void DrawSeaweed(const float width, const float length, const float height, const float colours[4]) {
 	float w2 = width / 2;
 	float h2 = height / 2;
 	float l2 = length / 2;
 
 	// Sets materials
-	glMaterialf(GL_FRONT_AND_BACK,  GL_SHININESS, 20.0);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  SPECULAR_COL);
-  
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 20.0);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, SPECULAR_COL);
+
 	// Turn on texture mapping and disable lighting
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_LIGHTING);
@@ -954,119 +963,122 @@ void DrawCubeSeaweed(const float width, const float length, const float height, 
 	// Sets colour
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, colours);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, colours);
-  
+
 	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
 
 	// front face
 	glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED]);
 	glBegin(GL_QUADS);
-		glColor3f(colours[0], colours[1], colours[2]);
-		glTexCoord2f(0.0, 1.0);
-		glVertex3f(w2, h2, l2);
-		glTexCoord2f(1.0, 1.0);
-		glVertex3f(-w2, h2, l2);
-		glTexCoord2f(1.0, 0.0);
-		glVertex3f(-w2, h2,-l2);
-		glTexCoord2f(0.0, 0.0);
-		glVertex3f(w2, h2, -l2);
+	glColor3f(colours[0], colours[1], colours[2]);
+	glTexCoord2f(0.0, 1.0);
+	glVertex3f(w2, h2, l2);
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(-w2, h2, l2);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(-w2, h2, -l2);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(w2, h2, -l2);
 	glEnd();
 }
 
 void DrawRock(const float s)
 {
-  float s2 = s/2;
+	float s2 = s / 2;
 
-  // Turn on texture mapping and disable lighting
-  glEnable(GL_TEXTURE_2D);
-  glDisable(GL_LIGHTING);
-  
-  // Back wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);  // Specify which texture will be used   
-  glBegin(GL_QUADS);
+	// Sets materials
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 10.0);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, SPECULAR_COL);
+
+	// Turn on texture mapping and disable lighting
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_LIGHTING);
+
+	// Back wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);  // Specify which texture will be used   
+	glBegin(GL_QUADS);
 	glColor3f(0.2f, 0.4f, 0.7f);
-	glTexCoord2f(0.0,  1.0);
+	glTexCoord2f(0.0, 1.0);
 	glVertex3f(-s2, -s2, -s2);
-	glTexCoord2f(1.0,  1.0);
-	  glVertex3f( s2, -s2, -s2);
-	glTexCoord2f(1.0,  0.0);
-	  glVertex3f( s2,  s2, -s2);
-	glTexCoord2f(0.0,  0.0);
-	glVertex3f(-s2,  s2, -s2);
-  glEnd();
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(s2, -s2, -s2);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(s2, s2, -s2);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(-s2, s2, -s2);
+	glEnd();
 
-  // Left wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
-  glBegin(GL_QUADS);
+	// Left wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
+	glBegin(GL_QUADS);
 	glColor3f(0.2f, 0.4f, 0.7f);
-	glTexCoord2f(0.0,  1.0);
-	glVertex3f(-s2, -s2,  s2);
-	glTexCoord2f(1.0,  1.0);
-	  glVertex3f(-s2, -s2, -s2);
-	glTexCoord2f(1.0,  0.0);
-	  glVertex3f(-s2,  s2, -s2);
-	glTexCoord2f(0.0,  0.0);
-	glVertex3f(-s2,  s2,  s2);   
-  glEnd();
+	glTexCoord2f(0.0, 1.0);
+	glVertex3f(-s2, -s2, s2);
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(-s2, -s2, -s2);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(-s2, s2, -s2);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(-s2, s2, s2);
+	glEnd();
 
-  // Bottom wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
-  glBegin(GL_QUADS);
+	// Bottom wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
+	glBegin(GL_QUADS);
 	glColor3f(0.15f, 0.35f, 0.65f);
-	glTexCoord2f(0.0,  1.0);
-	glVertex3f(-s2, -s2,  s2);
-	glTexCoord2f(1.0,  1.0);
-	  glVertex3f( s2, -s2,  s2);
-	glTexCoord2f(1.0,  0.0);
-	  glVertex3f( s2, -s2, -s2);
-	glTexCoord2f(0.0,  0.0);
-	glVertex3f(-s2, -s2, -s2);   
-  glEnd();
+	glTexCoord2f(0.0, 1.0);
+	glVertex3f(-s2, -s2, s2);
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(s2, -s2, s2);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(s2, -s2, -s2);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(-s2, -s2, -s2);
+	glEnd();
 
-  // Right wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
-	  glBegin(GL_QUADS);
-	  glColor3f(0.2f, 0.4f, 0.7f);
-	  glTexCoord2f(0.0, 1.0);
-	  glVertex3f(s2, -s2, s2);
-	  glTexCoord2f(1.0, 1.0);
-	  glVertex3f(s2, -s2, -s2);
-	  glTexCoord2f(1.0, 0.0);
-	  glVertex3f(s2, s2, -s2);
-	  glTexCoord2f(0.0, 0.0);
-	  glVertex3f(s2, s2, s2);
-  glEnd();
+	// Right wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
+	glBegin(GL_QUADS);
+	glColor3f(0.2f, 0.4f, 0.7f);
+	glTexCoord2f(0.0, 1.0);
+	glVertex3f(s2, -s2, s2);
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(s2, -s2, -s2);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(s2, s2, -s2);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(s2, s2, s2);
+	glEnd();
 
-  // Front wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
-	  glBegin(GL_QUADS);
-	  glColor3f(0.2f, 0.4f, 0.7f);
-	  glTexCoord2f(0.0, 1.0);
-	  glVertex3f(-s2, -s2, s2);
-	  glTexCoord2f(1.0, 1.0);
-	  glVertex3f(s2, -s2, s2);
-	  glTexCoord2f(1.0, 0.0);
-	  glVertex3f(s2, s2,s2);
-	  glTexCoord2f(0.0, 0.0);
-	  glVertex3f(-s2, s2, s2);
-  glEnd();
+	// Front wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
+	glBegin(GL_QUADS);
+	glColor3f(0.2f, 0.4f, 0.7f);
+	glTexCoord2f(0.0, 1.0);
+	glVertex3f(-s2, -s2, s2);
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(s2, -s2, s2);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(s2, s2, s2);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(-s2, s2, s2);
+	glEnd();
 
-  //Top wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
-	  glBegin(GL_QUADS);
+	// Top wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_ROCK]);
+	glBegin(GL_QUADS);
 	glColor3f(0.3f, 0.5f, 0.8f);
-	  glTexCoord2f(0.0, 1.0);
-	  glVertex3f(-s2, s2, s2);
-	  glTexCoord2f(1.0, 1.0);
-	  glVertex3f(s2, s2, s2);
-	  glTexCoord2f(1.0, 0.0);
-	  glVertex3f(s2, s2, -s2);
-	  glTexCoord2f(0.0, 0.0);
-	  glVertex3f(-s2, s2, -s2);
-  glEnd();
+	glTexCoord2f(0.0, 1.0);
+	glVertex3f(-s2, s2, s2);
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(s2, s2, s2);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(s2, s2, -s2);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(-s2, s2, -s2);
+	glEnd();
 
-  // Turn off texture mapping and enable lighting
-  glEnable(GL_LIGHTING);
-  glDisable(GL_TEXTURE_2D);
+	// Turn off texture mapping and enable lighting
+	glDisable(GL_TEXTURE_2D);
 }
 
 
@@ -1084,68 +1096,57 @@ void DrawSandFloor(const float width, const float length) {
 
 	glBindTexture(GL_TEXTURE_2D, textures[TID_SANDFLOOR]);
 	glBegin(GL_QUADS);
-		glColor3f(0.3f, 0.5f, 0.8f);
-		glTexCoord2f(0.0, 1.0);
-		glVertex3f(w2, 0.0, l2);
-		glTexCoord2f(1.0, 1.0);
-		glVertex3f(-w2, 0.0, l2);
-		glTexCoord2f(1.0, 0.0);
-		glVertex3f(-w2, 0.0,-l2);
-		glTexCoord2f(0.0, 0.0);
-		glVertex3f(w2, 0.0, -l2);
+	glColor3f(0.3f, 0.5f, 0.8f);
+	glTexCoord2f(0.0, 1.0);
+	glVertex3f(w2, 0.0, l2);
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(-w2, 0.0, l2);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(-w2, 0.0, -l2);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(w2, 0.0, -l2);
 	glEnd();
 }
-
-//|____________________________________________________________________
-//|
-//| Function: DrawPropeller
-//|
-//! \param width       [in] Width  of the propeller.
-//! \param length      [in] Length of the propeller.
-//! \return None.
-//!
-//! Draws a propeller.
-//|____________________________________________________________________
 
 void DrawCannon(const float width, const float length, const float height)
 {
 	// Define cylinder properties
 	float radius = width * 0.14f;  // Adjust radius based on desired width
-	float cylHeight = height*7.0f; // How short/long the cylinder is
+	float cylHeight = height * 7.0f; // How short/long the cylinder is
 	int numSlices = 10;
 	static float pi = 3.141;
 
 	// Push matrix to isolate cannon transformations
 	glPushMatrix();
-		glTranslatef(0.0f, -height*3, -length*0.5);  // Adjust for centered placement
+	glTranslatef(0.0f, -height * 3, -length * 0.5);  // Adjust for centered placement
 
-		// Draw cylinder
-		// reference: https://community.khronos.org/t/gl-quad-strip/68258
-		// https://www.mbsoftworks.sk/tutorials/opengl4/022-cylinder-and-sphere/
-		glBegin(GL_QUAD_STRIP);
-		
-		// Sets materials
-		glMaterialf(GL_FRONT_AND_BACK,  GL_SHININESS, 20.0);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  SPECULAR_COL);
+	// Draw cylinder
+	// reference: https://community.khronos.org/t/gl-quad-strip/68258
+	// https://www.mbsoftworks.sk/tutorials/opengl4/022-cylinder-and-sphere/
+	glBegin(GL_QUAD_STRIP);
 
-		// Sets ambient and diffuse
-		glMaterialfv(GL_FRONT, GL_AMBIENT, colour_dark_gray);
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, colour_dark_gray);
+	// Sets materials
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 20.0);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, SPECULAR_COL);
 
-		for (int i = 0; i <= numSlices; i++) {
-			float angle = i / float(numSlices) * (2.0f * pi);
-			float x = radius * cosf(angle);
-			float z = radius * sinf(angle);
+	// Sets ambient and diffuse
+	glMaterialfv(GL_FRONT, GL_AMBIENT, colour_dark_gray);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, colour_dark_gray);
 
-			// Draw top ring
-			glNormal3f(x / radius, 0.0f, z / radius);
-			glVertex3f(x, cylHeight / 2.0f, z);
+	for (int i = 0; i <= numSlices; i++) {
+		float angle = i / float(numSlices) * (2.0f * pi);
+		float x = radius * cosf(angle);
+		float z = radius * sinf(angle);
 
-			// Draw bottom ring
-			glNormal3f(x / radius, 0.0f, z / radius);
-			glVertex3f(x, -cylHeight / 2.0f, z);
-		}
-		glEnd();
+		// Draw top ring
+		glNormal3f(x / radius, 0.0f, z / radius);
+		glVertex3f(x, cylHeight / 2.0f, z);
+
+		// Draw bottom ring
+		glNormal3f(x / radius, 0.0f, z / radius);
+		glVertex3f(x, -cylHeight / 2.0f, z);
+	}
+	glEnd();
 	glPopMatrix();
 }
 
@@ -1153,12 +1154,12 @@ void DrawWing(const float width, const float length, const float height, const b
 {
 	DrawCube(width, length, height, colour_lime_green);
 	glPushMatrix();
-		// by default (without invert):
-		// would draw the wing extension on the left side
-		// otherwise if inverted, would draw the wing extension on the right side
-		int direction = (isInverted) ? 1 : -1;
-		glTranslatef(width*0.5*direction, 0, 0);
-		DrawCube(width*0.8, length*0.8, height*0.8, colour_lime_green);
+	// by default (without invert):
+	// would draw the wing extension on the left side
+	// otherwise if inverted, would draw the wing extension on the right side
+	int direction = (isInverted) ? 1 : -1;
+	glTranslatef(width * 0.5 * direction, 0, 0);
+	DrawCube(width * 0.8, length * 0.8, height * 0.8, colour_lime_green);
 	glPopMatrix();
 }
 
@@ -1174,99 +1175,117 @@ void DrawWing(const float width, const float length, const float height, const b
 
 void DrawSkybox(const float s)
 {
-  float s2 = s/2;
+	float s2 = s / 2;
 
-  // Turn on texture mapping and disable lighting
-  glEnable(GL_TEXTURE_2D);
-  glDisable(GL_LIGHTING);
-  
-  // Back wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SKYBACK]);  // Specify which texture will be used   
-  glBegin(GL_QUADS);
+	// Turn on texture mapping and disable lighting
+	glEnable(GL_TEXTURE_2D);
+	glDisable(GL_LIGHTING);
+
+	// Back wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SKYBACK]);  // Specify which texture will be used   
+	glBegin(GL_QUADS);
 	glColor3f(0.2f, 0.4f, 0.7f);
-	glTexCoord2f(0.0,  1.0);
+	glTexCoord2f(0.0, 1.0);
 	glVertex3f(-s2, -s2, -s2);
-	glTexCoord2f(1.0,  1.0);
-	  glVertex3f( s2, -s2, -s2);
-	glTexCoord2f(1.0,  0.0);
-	  glVertex3f( s2,  s2, -s2);
-	glTexCoord2f(0.0,  0.0);
-	glVertex3f(-s2,  s2, -s2);
-  glEnd();
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(s2, -s2, -s2);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(s2, s2, -s2);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(-s2, s2, -s2);
+	glEnd();
 
-  // Left wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SKYLEFT]);
-  glBegin(GL_QUADS);
+	// Left wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SKYLEFT]);
+	glBegin(GL_QUADS);
 	glColor3f(0.2f, 0.4f, 0.7f);
-	glTexCoord2f(0.0,  1.0);
-	glVertex3f(-s2, -s2,  s2);
-	glTexCoord2f(1.0,  1.0);
-	  glVertex3f(-s2, -s2, -s2);
-	glTexCoord2f(1.0,  0.0);
-	  glVertex3f(-s2,  s2, -s2);
-	glTexCoord2f(0.0,  0.0);
-	glVertex3f(-s2,  s2,  s2);   
-  glEnd();
+	glTexCoord2f(0.0, 1.0);
+	glVertex3f(-s2, -s2, s2);
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(-s2, -s2, -s2);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(-s2, s2, -s2);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(-s2, s2, s2);
+	glEnd();
 
-  // Bottom wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SKYBOTTOM]);
-  glBegin(GL_QUADS);
+	// Bottom wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SKYBOTTOM]);
+	glBegin(GL_QUADS);
 	glColor3f(0.15f, 0.35f, 0.65f);
-	glTexCoord2f(0.0,  1.0);
-	glVertex3f(-s2, -s2,  s2);
-	glTexCoord2f(1.0,  1.0);
-	  glVertex3f( s2, -s2,  s2);
-	glTexCoord2f(1.0,  0.0);
-	  glVertex3f( s2, -s2, -s2);
-	glTexCoord2f(0.0,  0.0);
-	glVertex3f(-s2, -s2, -s2);   
-  glEnd();
+	glTexCoord2f(0.0, 1.0);
+	glVertex3f(-s2, -s2, s2);
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(s2, -s2, s2);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(s2, -s2, -s2);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(-s2, -s2, -s2);
+	glEnd();
 
-  // Right wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SKYRIGHT]);
-	  glBegin(GL_QUADS);
-	  glColor3f(0.2f, 0.4f, 0.7f);
-	  glTexCoord2f(0.0, 1.0);
-	  glVertex3f(s2, -s2, s2);
-	  glTexCoord2f(1.0, 1.0);
-	  glVertex3f(s2, -s2, -s2);
-	  glTexCoord2f(1.0, 0.0);
-	  glVertex3f(s2, s2, -s2);
-	  glTexCoord2f(0.0, 0.0);
-	  glVertex3f(s2, s2, s2);
-  glEnd();
+	// Right wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SKYRIGHT]);
+	glBegin(GL_QUADS);
+	glColor3f(0.2f, 0.4f, 0.7f);
+	glTexCoord2f(0.0, 1.0);
+	glVertex3f(s2, -s2, s2);
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(s2, -s2, -s2);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(s2, s2, -s2);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(s2, s2, s2);
+	glEnd();
 
-  // Front wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SKYFRONT]);
-	  glBegin(GL_QUADS);
-	  glColor3f(0.2f, 0.4f, 0.7f);
-	  glTexCoord2f(0.0, 1.0);
-	  glVertex3f(-s2, -s2, s2);
-	  glTexCoord2f(1.0, 1.0);
-	  glVertex3f(s2, -s2, s2);
-	  glTexCoord2f(1.0, 0.0);
-	  glVertex3f(s2, s2,s2);
-	  glTexCoord2f(0.0, 0.0);
-	  glVertex3f(-s2, s2, s2);
-  glEnd();
+	// Front wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SKYFRONT]);
+	glBegin(GL_QUADS);
+	glColor3f(0.2f, 0.4f, 0.7f);
+	glTexCoord2f(0.0, 1.0);
+	glVertex3f(-s2, -s2, s2);
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(s2, -s2, s2);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(s2, s2, s2);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(-s2, s2, s2);
+	glEnd();
 
-  //Top wall
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SKYTOP]);
-	  glBegin(GL_QUADS);
+	//Top wall
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SKYTOP]);
+	glBegin(GL_QUADS);
 	glColor3f(0.3f, 0.5f, 0.8f);
-	  glTexCoord2f(0.0, 1.0);
-	  glVertex3f(-s2, s2, s2);
-	  glTexCoord2f(1.0, 1.0);
-	  glVertex3f(s2, s2, s2);
-	  glTexCoord2f(1.0, 0.0);
-	  glVertex3f(s2, s2, -s2);
-	  glTexCoord2f(0.0, 0.0);
-	  glVertex3f(-s2, s2, -s2);
-  glEnd();
+	glTexCoord2f(0.0, 1.0);
+	glVertex3f(-s2, s2, s2);
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(s2, s2, s2);
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(s2, s2, -s2);
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(-s2, s2, -s2);
+	glEnd();
 
-  // Turn off texture mapping and enable lighting
-  glEnable(GL_LIGHTING);
-  glDisable(GL_TEXTURE_2D);
+	// Turn off texture mapping and enable lighting
+	glEnable(GL_LIGHTING);
+	glDisable(GL_TEXTURE_2D);
+}
+
+void DrawSphere(float radius)
+{
+	static const int SPHERE_SLICES = 7;
+	static const int SPHERE_STACKS = 7;
+
+	glPushMatrix();
+
+	// Set material properties for the sphere
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 20.0f);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, SPECULAR_COL);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, BRIGHTRED_COL);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, BRIGHTRED_COL);
+
+	glutSolidSphere(radius, SPHERE_SLICES, SPHERE_STACKS);
+
+	glPopMatrix();
 }
 
 //|____________________________________________________________________
@@ -1282,24 +1301,27 @@ void DrawSkybox(const float s)
 //! Set light properties.
 //|____________________________________________________________________
 
-void SetLight(const gmtl::Point4f &pos, const bool is_ambient, const bool is_diffuse, const bool is_specular)
+void SetLight(const gmtl::Point4f& pos, const bool is_ambient, const bool is_diffuse, const bool is_specular)
 {
 	glLightfv(GL_LIGHT0, GL_POSITION, pos.mData);
-  if (is_ambient) {
-	  glLightfv(GL_LIGHT0, GL_AMBIENT,  AMBIENT_LIGHT);
-  } else {
-	glLightfv(GL_LIGHT0, GL_AMBIENT,  NO_LIGHT);
-  }
-  if (is_diffuse) {
-	  glLightfv(GL_LIGHT0, GL_DIFFUSE,  DIFFUSE_LIGHT);
-  } else {
-	glLightfv(GL_LIGHT0, GL_DIFFUSE,  NO_LIGHT);
-  }
-  if (is_specular) {
-	  glLightfv(GL_LIGHT0, GL_SPECULAR, SPECULAR_LIGHT);
-  } else {
-	glLightfv(GL_LIGHT0, GL_SPECULAR,  NO_LIGHT);
-  }
+	if (is_ambient) {
+		glLightfv(GL_LIGHT0, GL_AMBIENT, AMBIENT_LIGHT);
+	}
+	else {
+		glLightfv(GL_LIGHT0, GL_AMBIENT, NO_LIGHT);
+	}
+	if (is_diffuse) {
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, DIFFUSE_LIGHT);
+	}
+	else {
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, NO_LIGHT);
+	}
+	if (is_specular) {
+		glLightfv(GL_LIGHT0, GL_SPECULAR, SPECULAR_LIGHT);
+	}
+	else {
+		glLightfv(GL_LIGHT0, GL_SPECULAR, NO_LIGHT);
+	}
 }
 
 //|____________________________________________________________________
@@ -1317,47 +1339,46 @@ void SetLight(const gmtl::Point4f &pos, const bool is_ambient, const bool is_dif
 //! to deallocate when it is no longer needed.
 //|____________________________________________________________________
 
-void LoadPPM(const char *fname, unsigned int *w, unsigned int *h, unsigned char **data, const int mallocflag)
+void LoadPPM(const char* fname, unsigned int* w, unsigned int* h, unsigned char** data, const int mallocflag)
 {
-  FILE *fp;
-  char P, num;
-  int max;
-  char s[1000];
+	FILE* fp;
+	char P, num;
+	int max;
+	char s[1000];
 
-  if (!(fp = fopen(fname, "rb")))
-   {
-	perror("cannot open image file\n");
-	exit(0);
-   }
+	if (!(fp = fopen(fname, "rb")))
+	{
+		perror("cannot open image file\n");
+		exit(0);
+	}
 
-  fscanf(fp, "%c%c\n", &P, &num);
-  if ((P != 'P') || (num != '6'))
-   {
-	perror("unknown file format for image\n");
-	exit(0);
-   }
+	fscanf(fp, "%c%c\n", &P, &num);
+	if ((P != 'P') || (num != '6'))
+	{
+		perror("unknown file format for image\n");
+		exit(0);
+	}
 
-  do
-   {
+	do
+	{
+		fgets(s, 999, fp);
+	} while (s[0] == '#');
+
+
+	sscanf(s, "%d%d", w, h);
 	fgets(s, 999, fp);
-   }
-  while (s[0] == '#');
+	sscanf(s, "%d", &max);
 
+	if (mallocflag)
+		if (!(*data = (unsigned char*)malloc(*w * *h * 3)))
+		{
+			perror("cannot allocate memory for image data\n");
+			exit(0);
+		}
 
-  sscanf(s, "%d%d", w, h);
-  fgets(s, 999, fp);
-  sscanf(s, "%d", &max);
+	fread(*data, 3, *w * *h, fp);
 
-  if (mallocflag)
-	if (!(*data = (unsigned char *)malloc(*w * *h * 3)))
-	 {
-	  perror("cannot allocate memory for image data\n");
-	  exit(0);
-	 }
-
-  fread(*data, 3, *w * *h, fp);
-
-  fclose(fp);
+	fclose(fp);
 }
 
 //|____________________________________________________________________
@@ -1370,29 +1391,29 @@ void LoadPPM(const char *fname, unsigned int *w, unsigned int *h, unsigned char 
 //! Program entry point
 //|____________________________________________________________________
 
-int main(int argc, char **argv)
-{ 
-  // https://en.cppreference.com/w/cpp/numeric/random/rand
-  // current time as random seed for generating seaweeds
-  std::srand(std::time(nullptr));
-  InitTransforms();
+int main(int argc, char** argv)
+{
+	// https://en.cppreference.com/w/cpp/numeric/random/rand
+	// current time as random seed for generating seaweeds
+	std::srand(std::time(nullptr));
+	InitTransforms();
 
-  glutInit(&argc, argv);
+	glutInit(&argc, argv);
 
-  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);     // Uses GLUT_DOUBLE to enable double buffering
-  glutInitWindowSize(w_width, w_height);
-  
-  glutCreateWindow("Plane Episode 3");
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);     // Uses GLUT_DOUBLE to enable double buffering
+	glutInitWindowSize(w_width, w_height);
 
-  glutDisplayFunc(DisplayFunc);
-  glutKeyboardFunc(KeyboardFunc);
-  glutMouseFunc(MouseFunc);
-  glutMotionFunc(MotionFunc);
-  glutReshapeFunc(ReshapeFunc);
-  
-  InitGL();
+	glutCreateWindow("Plane Episode 3");
 
-  glutMainLoop();
+	glutDisplayFunc(DisplayFunc);
+	glutKeyboardFunc(KeyboardFunc);
+	glutMouseFunc(MouseFunc);
+	glutMotionFunc(MotionFunc);
+	glutReshapeFunc(ReshapeFunc);
 
-  return 0;
+	InitGL();
+
+	glutMainLoop();
+
+	return 0;
 }
