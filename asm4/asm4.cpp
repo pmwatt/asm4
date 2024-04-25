@@ -50,7 +50,7 @@
 //| Constants
 //|___________________
 
-// number of seaweeds
+// Number of seaweeds per side e.g. 10 would means 10x10=100 seaweeds total
 const int num_seaweeds = 10;
 
 // preset colours
@@ -60,7 +60,9 @@ const float colour_light_lime_green[4] = { 0.20f, 0.57f, 0.45f, 1.0f };
 const float colour_dark_gray[4] = { 0.25f, 0.25f, 0.25f, 1.0f };
 const float colour_darker_gray[4] = { 0.17f, 0.17f, 0.17f, 1.0f };
 const float colour_light_red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
-const float colour_seaweed0[4] = { 0.8f, 0.9f, 0.9f, 1.0f };
+const float colour_seaweed0[4] = { 0.8f, 0.9f, 0.9f, 0.5f };
+const float colour_seaweed1[4] = { 0.0f, 0.0f, 0.0f, 0.5f };
+
 
 // Propeller dimensions (subpart)
 const float WING_WIDTH = 3.5;
@@ -98,7 +100,7 @@ enum KeyModifier {KM_SHIFT = 0, KM_CTRL, KM_ALT};
 // Textures
 enum TextureID {TID_SKYBACK = 0, TID_SKYLEFT, TID_SKYBOTTOM,
 	TID_SKYRIGHT, TID_SKYFRONT, TID_SKYTOP,
-	TID_SEAWEED_0, TID_SEAWEED_1, TID_SEAWEED_2,
+	TID_SEAWEED_0, TID_SEAWEED_1, TID_SANDFLOOR,
 	TEXTURE_NB};  // Texture IDs, with the last ID indicating the total number of textures
 
 // Skybox
@@ -106,7 +108,7 @@ const float SB_SIZE        = 1000.0f;                     // Skybox dimension
 
 // Lighting
 const GLfloat NO_LIGHT[] = {0.0, 0.0, 0.0, 1.0};
-const GLfloat AMBIENT_LIGHT[]  = { 0.1, 0.1, 0.1, 1.0 };                
+const GLfloat AMBIENT_LIGHT[]  = { 0.3, 0.4, 0.5, 1.0 };                
 const GLfloat DIFFUSE_LIGHT[]  = { 0.5, 0.5, 0.5, 1.0 };                
 const GLfloat SPECULAR_LIGHT[] = { 0.5, 0.5, 0.5, 1.0 };
 
@@ -202,7 +204,8 @@ void DrawCannon(const float width, const float length, const float height);
 void DrawCube(const float width, const float length, const float height, const float colours[4]);
 void DrawCubeSeaweed(const float width, const float length, const float height, const float colours[4]);
 void DrawCubeSeaweedDarker(const float width, const float length, const float height, const float colours[4]);
-
+void DrawSandFloor(const float width, const float length);
+void DrawRock(const float s);
 
 //|____________________________________________________________________
 //|
@@ -379,13 +382,20 @@ void InitGL(void)
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
   // Seaweed 1
-  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_0]);
+  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_1]);
   LoadPPM("seaweed1.ppm", &width, &height, &img_data, 1);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
   free(img_data);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
+//Sand floor texture
+glBindTexture(GL_TEXTURE_2D, textures[TID_SANDFLOOR]);
+LoadPPM("sand.ppm", &width, &height, &img_data, 1);
+glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img_data);
+free(img_data);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 }
 
 //|____________________________________________________________________
@@ -554,23 +564,38 @@ void DisplayFunc(void)
 		glPopMatrix();
 	glPopMatrix();
 
-	// Draw extra seaweeds with different textures
+	// Initialize position to be at the edge of the skybox
 	glTranslatef(-500.0f, 0.0f, -500.0f);
-	for (int i = 0; i < num_seaweeds; ++i) {
-		for (int j = 0; j < num_seaweeds; ++j) {
+
+	// Draw extra seaweeds with different textures
+	for (int i = 1; i < num_seaweeds; ++i) {
+		for (int j = 1; j < num_seaweeds; ++j) {
 				glPushMatrix();
-			glTranslatef(SB_SIZE/num_seaweeds*i+50, -350, SB_SIZE/num_seaweeds*j+50);
-			DrawCubeSeaweed(15.0f, 0.0f, 200.0f, colour_seaweed0);
+			glTranslatef(SB_SIZE/num_seaweeds*i+50, -300, SB_SIZE/num_seaweeds*j+50);
+			DrawCubeSeaweed(15.0f, 300.0f, 0.0f, colour_seaweed1);
 				glPopMatrix();
 		}
 	}
 
 	// Draw extra darker seaweeds with different textures
-	for (int i = 0; i < num_seaweeds; ++i) {
-		for (int j = 0; j < num_seaweeds; ++j) {
+	for (int i = 1; i < num_seaweeds; i+=i*2) {
+		for (int j = 1; j < num_seaweeds; j+=i+1) {
 				glPushMatrix();
-			glTranslatef(SB_SIZE/num_seaweeds*i, -350, SB_SIZE/num_seaweeds*j);
-			DrawCubeSeaweedDarker(15.0f, 0.0f, 500.0f, colour_lime_green);
+			glTranslatef(SB_SIZE/num_seaweeds*j, -475, SB_SIZE/num_seaweeds*i+j*SB_SIZE/num_seaweeds);
+			glRotatef(20.0f*i*j, 0.0f, 1.0f, 0.0f);
+			DrawRock(50.0f);
+				glPopMatrix();
+		}
+	}
+
+	// Draw sandfloors
+	for (int i = 1; i < num_seaweeds; i+=i*2) {
+		for (int j = 1; j < num_seaweeds; j+=i+1) {
+				glPushMatrix();
+				// Not sure what I'm doing, trying to do a semi-random position
+			glTranslatef(SB_SIZE/num_seaweeds*i+j*SB_SIZE/num_seaweeds, -SB_SIZE/2+2, SB_SIZE/num_seaweeds*j);
+			glRotatef(20.0f*i*j, 0.0f, 1.0f, 0.0f);
+			DrawSandFloor(120.0f, 120.0f);
 				glPopMatrix();
 		}
 	}
@@ -925,59 +950,150 @@ void DrawCubeSeaweed(const float width, const float length, const float height, 
   
 	// Turn on texture mapping and disable lighting
 	glEnable(GL_TEXTURE_2D);
-	glDisable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);
 
 	// Sets colour
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, colours);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, colours);
   
-	glBegin(GL_QUADS);
+	glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
 
 	// front face
 	glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_0]);
-	glColor3f(colours[0], colours[1], colours[2]);
-		  glTexCoord2f(0.0, 1.0);
-	glVertex3f(w2, h2, -l2);
-		  glTexCoord2f(1.0, 1.0);
-	glVertex3f(-w2, h2, -l2);
-		  glTexCoord2f(1.0, 0.0);
-	glVertex3f(-w2, -h2, -l2);
-		  glTexCoord2f(0.0, 0.0);
-	glVertex3f(w2, -h2, -l2);
+	glBegin(GL_QUADS);
+		glColor3f(colours[0], colours[1], colours[2]);
+		glTexCoord2f(0.0, 1.0);
+		glVertex3f(w2, h2, l2);
+		glTexCoord2f(1.0, 1.0);
+		glVertex3f(-w2, h2, l2);
+		glTexCoord2f(1.0, 0.0);
+		glVertex3f(-w2, h2,-l2);
+		glTexCoord2f(0.0, 0.0);
+		glVertex3f(w2, h2, -l2);
 	glEnd();
 }
 
+void DrawRock(const float s)
+{
+  float s2 = s/2;
 
-void DrawCubeSeaweedDarker(const float width, const float length, const float height, const float colours[4]) {
+  // Turn on texture mapping and disable lighting
+  glEnable(GL_TEXTURE_2D);
+  glDisable(GL_LIGHTING);
+  
+  // Back wall
+  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_1]);  // Specify which texture will be used   
+  glBegin(GL_QUADS);
+	glColor3f(0.2f, 0.4f, 0.7f);
+	glTexCoord2f(0.0,  1.0);
+	glVertex3f(-s2, -s2, -s2);
+	glTexCoord2f(1.0,  1.0);
+	  glVertex3f( s2, -s2, -s2);
+	glTexCoord2f(1.0,  0.0);
+	  glVertex3f( s2,  s2, -s2);
+	glTexCoord2f(0.0,  0.0);
+	glVertex3f(-s2,  s2, -s2);
+  glEnd();
+
+  // Left wall
+  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_1]);
+  glBegin(GL_QUADS);
+	glColor3f(0.2f, 0.4f, 0.7f);
+	glTexCoord2f(0.0,  1.0);
+	glVertex3f(-s2, -s2,  s2);
+	glTexCoord2f(1.0,  1.0);
+	  glVertex3f(-s2, -s2, -s2);
+	glTexCoord2f(1.0,  0.0);
+	  glVertex3f(-s2,  s2, -s2);
+	glTexCoord2f(0.0,  0.0);
+	glVertex3f(-s2,  s2,  s2);   
+  glEnd();
+
+  // Bottom wall
+  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_1]);
+  glBegin(GL_QUADS);
+	glColor3f(0.15f, 0.35f, 0.65f);
+	glTexCoord2f(0.0,  1.0);
+	glVertex3f(-s2, -s2,  s2);
+	glTexCoord2f(1.0,  1.0);
+	  glVertex3f( s2, -s2,  s2);
+	glTexCoord2f(1.0,  0.0);
+	  glVertex3f( s2, -s2, -s2);
+	glTexCoord2f(0.0,  0.0);
+	glVertex3f(-s2, -s2, -s2);   
+  glEnd();
+
+  // Right wall
+  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_1]);
+	  glBegin(GL_QUADS);
+	  glColor3f(0.2f, 0.4f, 0.7f);
+	  glTexCoord2f(0.0, 1.0);
+	  glVertex3f(s2, -s2, s2);
+	  glTexCoord2f(1.0, 1.0);
+	  glVertex3f(s2, -s2, -s2);
+	  glTexCoord2f(1.0, 0.0);
+	  glVertex3f(s2, s2, -s2);
+	  glTexCoord2f(0.0, 0.0);
+	  glVertex3f(s2, s2, s2);
+  glEnd();
+
+  // Front wall
+  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_1]);
+	  glBegin(GL_QUADS);
+	  glColor3f(0.2f, 0.4f, 0.7f);
+	  glTexCoord2f(0.0, 1.0);
+	  glVertex3f(-s2, -s2, s2);
+	  glTexCoord2f(1.0, 1.0);
+	  glVertex3f(s2, -s2, s2);
+	  glTexCoord2f(1.0, 0.0);
+	  glVertex3f(s2, s2,s2);
+	  glTexCoord2f(0.0, 0.0);
+	  glVertex3f(-s2, s2, s2);
+  glEnd();
+
+  //Top wall
+  glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_1]);
+	  glBegin(GL_QUADS);
+	glColor3f(0.3f, 0.5f, 0.8f);
+	  glTexCoord2f(0.0, 1.0);
+	  glVertex3f(-s2, s2, s2);
+	  glTexCoord2f(1.0, 1.0);
+	  glVertex3f(s2, s2, s2);
+	  glTexCoord2f(1.0, 0.0);
+	  glVertex3f(s2, s2, -s2);
+	  glTexCoord2f(0.0, 0.0);
+	  glVertex3f(-s2, s2, -s2);
+  glEnd();
+
+  // Turn off texture mapping and enable lighting
+  glEnable(GL_LIGHTING);
+  glDisable(GL_TEXTURE_2D);
+}
+
+
+void DrawSandFloor(const float width, const float length) {
+
 	float w2 = width / 2;
-	float h2 = height / 2;
 	float l2 = length / 2;
 
-	// Sets materials
-	glMaterialf(GL_FRONT_AND_BACK,  GL_SHININESS, 20.0);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  SPECULAR_COL);
-  
+	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 20.0);
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, SPECULAR_COL);
+
 	// Turn on texture mapping and disable lighting
 	glEnable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 
-	// Sets colour
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, colours);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, colours);
-  
+	glBindTexture(GL_TEXTURE_2D, textures[TID_SANDFLOOR]);
 	glBegin(GL_QUADS);
-
-	// front face
-	glBindTexture(GL_TEXTURE_2D, textures[TID_SEAWEED_1]);
-	glColor3f(colours[0], colours[1], colours[2]);
-		  glTexCoord2f(0.0, 1.0);
-	glVertex3f(w2, h2, -l2);
-		  glTexCoord2f(1.0, 1.0);
-	glVertex3f(-w2, h2, -l2);
-		  glTexCoord2f(1.0, 0.0);
-	glVertex3f(-w2, -h2, -l2);
-		  glTexCoord2f(0.0, 0.0);
-	glVertex3f(w2, -h2, -l2);
+		glColor3f(0.3f, 0.5f, 0.8f);
+		glTexCoord2f(0.0, 1.0);
+		glVertex3f(w2, 0.0, l2);
+		glTexCoord2f(1.0, 1.0);
+		glVertex3f(-w2, 0.0, l2);
+		glTexCoord2f(1.0, 0.0);
+		glVertex3f(-w2, 0.0,-l2);
+		glTexCoord2f(0.0, 0.0);
+		glVertex3f(w2, 0.0, -l2);
 	glEnd();
 }
 
